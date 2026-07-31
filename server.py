@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import ccxt
@@ -5,14 +6,19 @@ import ccxt
 app = Flask(__name__)
 CORS(app)
 
-def get_exchange_instance(exchange_id, api_key, api_secret):
+def get_exchange_instance(exchange_id, api_key=None, api_secret=None):
     exchange_class = getattr(ccxt, exchange_id)
+    
+    # Puxa a chave enviada na requisição ou usa as variáveis seguras do Render
+    key = api_key or os.getenv('EXCHANGE_API_KEY')
+    secret = api_secret or os.getenv('EXCHANGE_API_SECRET')
+    
     return exchange_class({
-        'apiKey': "ixdn6tWtjWKuNmUjef",
-        'secret': "RMrGoIG8ua4gKIplNw2zIpcCR2gTp9v5nKpt",
+        'apiKey': key,
+        'secret': secret,
         'enableRateLimit': True,
         'options': {
-            'defaultType': 'linear',  # USDT Linear Perpetual
+            'defaultType': 'linear', # USDT Linear Perpetual
         }
     })
 
