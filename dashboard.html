@@ -14,20 +14,20 @@
 <body class="bg-gray-950 text-gray-100 font-sans selection:bg-emerald-500 selection:text-black">
 
     <div class="flex h-screen overflow-hidden">
-        <!-- Sidebar / Menu Lateral -->
         <div class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col justify-between shadow-xl">
             <div class="p-6">
-                <h1 class="text-2xl font-black tracking-wider text-emerald-400 neon-glow">AEROQUANT</h1>
-                <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest font-semibold">Trading & IA</p>
+                <h1 class="text-2xl font-black tracking-wider text-emerald-400 neon-glow">WITS</h1>
+                <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest font-semibold">AI Quant Trading System</p>
                 
                 <nav class="mt-8 space-y-2">
-                    <button onclick="switchTab('dashboard')" class="w-full text-left px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-semibold shadow-lg shadow-emerald-900/30 transition tab-btn flex items-center space-x-3" id="btn-dashboard">
-                        <span>Dashboard</span>
+                    <button onclick="switchMainTab('dashboard')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition main-tab-btn" id="btn-main-dashboard">Dashboard</button>
+                    <button onclick="switchMainTab('bots')" class="w-full text-left px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-semibold shadow-lg shadow-emerald-900/30 transition main-tab-btn flex items-center space-x-3" id="btn-main-bots">
+                        <span>Bots</span>
                     </button>
-                    <button onclick="switchTab('trades')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition tab-btn" id="btn-trades">Trades & Bots</button>
-                    <button onclick="switchTab('gas')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition tab-btn" id="btn-gas">Saldo de Gás</button>
-                    <button onclick="switchTab('exchange')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition tab-btn" id="btn-exchange">Corretoras</button>
-                    <button onclick="switchTab('settings')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition tab-btn" id="btn-settings">Configurações</button>
+                    <button onclick="switchMainTab('gas')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition main-tab-btn">Saldo de Gás</button>
+                    <button onclick="switchMainTab('licenca')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition main-tab-btn">Licença</button>
+                    <button onclick="switchMainTab('referencias')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition main-tab-btn">Referências</button>
+                    <button onclick="switchMainTab('configuracoes')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition main-tab-btn">Configurações</button>
                 </nav>
             </div>
             <div class="p-6 border-t border-gray-800 bg-gray-900/50">
@@ -35,147 +35,243 @@
             </div>
         </div>
 
-        <!-- Conteúdo Principal -->
         <div class="flex-1 flex flex-col overflow-y-auto bg-gray-950">
             <header class="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 px-8 py-5 flex justify-between items-center sticky top-0 z-10">
-                <h2 id="page-title" class="text-xl font-bold tracking-tight text-emerald-400">Dashboard</h2>
+                <h2 id="page-title" class="text-xl font-bold tracking-tight text-emerald-400">Bots de Trading</h2>
                 <div id="gas-display-header" class="bg-gray-800/90 border border-emerald-500/30 px-4 py-2 rounded-xl text-sm font-semibold shadow-inner text-emerald-400">
                     Gás: Carregando...
                 </div>
             </header>
 
             <main class="p-8">
-                <!-- Aba Dashboard -->
-                <div id="tab-dashboard" class="tab-content space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl hover:border-emerald-500/50 transition">
-                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Saldo Total Estimado</p>
-                            <p class="text-3xl font-black mt-3 text-emerald-400 neon-glow">$0.00</p>
-                        </div>
-                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl hover:border-emerald-500/50 transition">
-                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Bots Ativos</p>
-                            <p class="text-3xl font-black mt-3 text-emerald-400 neon-glow">0</p>
-                        </div>
-                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl hover:border-emerald-500/50 transition">
-                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Saldo de Gás Disponível</p>
-                            <p id="gas-balance-card" class="text-3xl font-black mt-3 text-emerald-400 neon-glow">USDT --</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Aba Trades & Bots -->
-                <div id="tab-trades" class="tab-content hidden space-y-6">
+                <div id="section-dashboard" class="main-section hidden space-y-6">
                     <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl">
-                        <h3 class="text-lg font-bold mb-6 text-emerald-400 flex items-center">Controle do Robô de Trading</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Corretora</label>
-                                <select id="bot-exchange" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
-                                    <option value="bybit">Bybit</option>
-                                    <option value="binance">Binance</option>
-                                    <option value="okx">OKX</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Par de Moedas</label>
-                                <input type="text" id="bot-symbol" value="BTC/USDT" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
-                            </div>
-                        </div>
-                        <div class="flex space-x-4">
-                            <button onclick="controlBot('start')" class="bg-emerald-600 hover:bg-emerald-500 px-6 py-3 rounded-xl font-bold text-black shadow-lg shadow-emerald-900/40 transition">Iniciar Bot</button>
-                            <button onclick="controlBot('stop')" class="bg-rose-600 hover:bg-rose-500 px-6 py-3 rounded-xl font-bold text-white shadow-lg shadow-rose-900/30 transition">Parar Bot</button>
-                        </div>
-                        <p id="bot-status-msg" class="mt-4 text-sm font-medium text-emerald-400"></p>
+                        <h3 class="text-xl font-bold text-emerald-400 mb-2">Visão Geral do Sistema</h3>
+                        <p class="text-gray-400 text-sm">Resumo geral das suas operações na plataforma.</p>
                     </div>
                 </div>
 
-                <!-- Aba Saldo de Gás -->
-                <div id="tab-gas" class="tab-content hidden space-y-6">
+                <div id="section-bots" class="main-section space-y-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl gap-4">
+                        <div>
+                            <h3 class="text-xl font-black text-emerald-400">Bots de Trading</h3>
+                            <p class="text-sm text-gray-400 mt-1">Cada bot opera uma moeda com a sua própria configuração</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="bg-emerald-950 text-emerald-400 border border-emerald-500/30 px-4 py-2 rounded-xl font-bold text-sm flex items-center">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-2"></span> Ligado
+                            </span>
+                            <button onclick="openNewBotModal()" class="bg-emerald-600 hover:bg-emerald-500 text-black px-5 py-2.5 rounded-xl font-bold transition shadow-lg shadow-emerald-900/30">+ Novo bot</button>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-2 border-b border-gray-800 pb-4">
+                        <button onclick="switchBotTab('visao-geral')" class="px-5 py-2.5 rounded-xl bg-emerald-600 text-black font-bold transition bot-tab-btn" id="btn-visao-geral">Visão Geral</button>
+                        <button onclick="switchBotTab('operacoes')" class="px-5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-emerald-400 font-semibold transition bot-tab-btn" id="btn-operacoes">Operações</button>
+                        <button onclick="switchBotTab('configuracoes')" class="px-5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-emerald-400 font-semibold transition bot-tab-btn" id="btn-configuracoes">Configurações</button>
+                    </div>
+
+                    <div id="bot-tab-visao-geral" class="bot-tab-content space-y-6">
+                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-4">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center space-x-3">
+                                    <span class="font-black text-lg text-white">BTC/USDT</span>
+                                    <span class="bg-gray-800 text-emerald-400 text-xs px-2.5 py-1 rounded-lg font-bold border border-emerald-500/20">Alav: 10x</span>
+                                    <span class="bg-gray-800 text-emerald-400 text-xs px-2.5 py-1 rounded-lg font-bold border border-emerald-500/20">Modo: Real</span>
+                                </div>
+                                <span class="text-xs text-gray-400 font-medium">Próxima análise em <strong class="text-emerald-400">28s</strong></span>
+                            </div>
+                            <div class="text-xs text-gray-300 space-y-1 bg-gray-950 p-4 rounded-xl border border-gray-800">
+                                <p><strong class="text-emerald-400">Condição de mercado:</strong> Consolidação (Lateral). Mercado lateral e comprimido (ADX 20). Sem tendência e o robô espera um rompimento com força antes de entrar.</p>
+                                <p><strong class="text-emerald-400">Alinhamento dos 5 tempos (15minutos, 1hora, 4horas, 1cronograma) + nossos precise price/futures:</strong> Tendência (EMA 200). Volatilidade 0.00%</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Patrimônio total</p>
+                                <p class="text-2xl font-black mt-2 text-white">19,89 USDT</p>
+                            </div>
+                            <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Disponível</p>
+                                <p class="text-2xl font-black mt-2 text-white">19,99 USDT</p>
+                            </div>
+                            <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">P&L, não realizado</p>
+                                <p class="text-2xl font-black mt-2 text-rose-500">-0,19 USDT</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-4">
+                            <h4 class="text-sm font-bold text-emerald-400">Lucro / Perda</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800">
+                                    <p class="text-xs text-gray-400">Hoje</p>
+                                    <p class="text-lg font-bold text-emerald-400">+0,00 USDT</p>
+                                </div>
+                                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800">
+                                    <p class="text-xs text-gray-400">Semana</p>
+                                    <p class="text-lg font-bold text-rose-500">-0,15 USDT</p>
+                                </div>
+                                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800">
+                                    <p class="text-xs text-gray-400">Mês</p>
+                                    <p class="text-lg font-bold text-rose-500">-0,15 USDT</p>
+                                </div>
+                                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800">
+                                    <p class="text-xs text-gray-400">Ano</p>
+                                    <p class="text-lg font-bold text-rose-500">-0,15 USDT</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="bot-tab-operacoes" class="bot-tab-content hidden space-y-6">
+                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
+                            <h4 class="text-md font-bold text-emerald-400 mb-4">Histórico de Operações</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm text-gray-300">
+                                    <thead class="bg-gray-950 text-gray-400 uppercase text-xs">
+                                        <tr>
+                                            <th class="p-3">Par</th>
+                                            <th class="p-3">Lado</th>
+                                            <th class="p-3">Entrada</th>
+                                            <th class="p-3">Saída</th>
+                                            <th class="p-3">P&L</th>
+                                            <th class="p-3">Qtd</th>
+                                            <th class="p-3">Exchange</th>
+                                            <th class="p-3">Alav.</th>
+                                            <th class="p-3">Data</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-800">
+                                        <tr>
+                                            <td class="p-3 font-bold">BTC/USDT</td>
+                                            <td class="p-3 text-emerald-400 font-bold">LONG</td>
+                                            <td class="p-3">$63275.00</td>
+                                            <td class="p-3">$0</td>
+                                            <td class="p-3 text-emerald-400">+$0</td>
+                                            <td class="p-3">2</td>
+                                            <td class="p-3">Bitget</td>
+                                            <td class="p-3">10x</td>
+                                            <td class="p-3 text-gray-500">31/07/2026</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 font-bold">BTC/USDT</td>
+                                            <td class="p-3 text-rose-500 font-bold">SHORT</td>
+                                            <td class="p-3">$64362.20</td>
+                                            <td class="p-3">$0</td>
+                                            <td class="p-3 text-emerald-400">+$0</td>
+                                            <td class="p-3">2</td>
+                                            <td class="p-3">Bitget</td>
+                                            <td class="p-3">6x</td>
+                                            <td class="p-3 text-gray-500">31/07/2026</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="bot-tab-configuracoes" class="bot-tab-content hidden space-y-6">
+                        <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl space-y-6">
+                            <div>
+                                <h4 class="text-lg font-bold text-emerald-400">Configuração padrão dos bots</h4>
+                                <p class="text-xs text-gray-400 mt-1">Estes valores são usados como ponto de partida ao criar um novo bot. Cada bot tem a sua própria configuração e a moeda é escolhida na criação.</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Exchange (da conta)</label>
+                                    <select class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500">
+                                        <option>Bitget</option>
+                                        <option>Binance</option>
+                                        <option>Bybit</option>
+                                    </select>
+                                    <p class="text-xs text-gray-500 mt-1">A corretora vale para toda a conta (onde suas chaves de API estão conectadas).</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Alavancagem máxima padrão</label>
+                                    <input type="number" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Risco por operação padrão (%)</label>
+                                <input type="number" value="2" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 max-w-xs">
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-800">
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-3">Modo de execução padrão</label>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="bg-gray-950 p-4 rounded-xl border border-emerald-500/40">
+                                        <p class="font-bold text-sm text-white">Simulação (recomendada)</p>
+                                        <p class="text-xs text-gray-400 mt-1">O bot gera os sinais e simula em conta falsa, sem enviar ordens reais. Ideal para validar as estratégias.</p>
+                                    </div>
+                                    <div class="bg-gray-950 p-4 rounded-xl border border-gray-800">
+                                        <p class="font-bold text-sm text-white">Real - Dinheiro de verdade</p>
+                                        <p class="text-xs text-gray-400 mt-1">O bot envia ordens reais à corretora usando seu saldo. A chave de API precisa de permissão de "Trade".</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-800 space-y-4">
+                                <h5 class="text-sm font-bold text-emerald-400 uppercase tracking-wide">Configuração avançada padrão</h5>
+                                
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-400 mb-2">Estratégia WITS Combinada</label>
+                                    <p class="text-xs text-gray-500 mb-3">O bot usa as 4 estratégias juntas, como uma única estratégia. Os sinais são combinados por votação para decidir cada entrada.</p>
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                                        <div class="bg-gray-950 p-3 rounded-lg border border-emerald-500/30 text-emerald-400 font-semibold">Trend Following</div>
+                                        <div class="bg-gray-950 p-3 rounded-lg border border-gray-800">Scalping + Momentum</div>
+                                        <div class="bg-gray-950 p-3 rounded-lg border border-gray-800">Mean Reversion</div>
+                                        <div class="bg-gray-950 p-3 rounded-lg border border-gray-800">Smart Money (SMC)</div>
+                                    </div>
+                                </div>
+
+                                <div class="pt-4 border-t border-gray-800 space-y-4">
+                                    <h5 class="text-sm font-bold text-emerald-400">WITS Guardian - Gestão de Risco & Preservação de Capital</h5>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-xs text-gray-400 mb-1">Score mínimo de entrada (0-100)</label>
+                                            <input type="number" value="75" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs text-gray-400 mb-1">Capital mínimo (USDT)</label>
+                                            <input type="number" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs text-gray-400 mb-1">Perda diária máx. %</label>
+                                            <input type="number" value="5" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button onclick="saveBotSettingsVid()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-bold text-black transition shadow-lg shadow-emerald-900/30 mt-6">Salvar Configurações</button>
+                                <p id="cfg-saved-msg" class="text-xs text-emerald-400 font-medium"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="section-gas" class="main-section hidden space-y-6">
                     <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl max-w-xl">
-                        <h3 class="text-lg font-bold mb-6 text-emerald-400">Adicionar Saldo de Gás (USDT - BEP20)</h3>
-                        <div class="space-y-5">
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Valor em USDT</label>
-                                <input type="number" id="deposit-amount" placeholder="50.00" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Hash da Transação (TxHash)</label>
-                                <input type="text" id="deposit-txhash" placeholder="0x..." class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
-                            </div>
-                            <button onclick="registerDeposit()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-bold text-black shadow-lg shadow-emerald-900/40 transition">Registrar Depósito</button>
-                        </div>
-                        <p id="gas-msg" class="mt-4 text-sm font-medium text-emerald-400"></p>
+                        <h3 class="text-lg font-bold mb-4 text-emerald-400">Saldo de Gás (USDT - BEP20)</h3>
+                        <p class="text-sm text-gray-400">Gerencie seu saldo para manter os robôs ativos.</p>
                     </div>
                 </div>
-
-                <!-- Aba Corretoras -->
-                <div id="tab-exchange" class="tab-content hidden space-y-6">
+                <div id="section-licenca" class="main-section hidden space-y-6">
                     <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl max-w-xl">
-                        <h3 class="text-lg font-bold mb-6 text-emerald-400">Conectar API da Corretora</h3>
-                        <div class="space-y-5">
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Corretora</label>
-                                <select id="conn-exchange" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
-                                    <option value="bybit">Bybit</option>
-                                    <option value="binance">Binance</option>
-                                    <option value="okx">OKX</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">API Key</label>
-                                <input type="text" id="conn-apikey" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">API Secret</label>
-                                <input type="password" id="conn-apisecret" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
-                            </div>
-                            <button onclick="connectExchange()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-bold text-black shadow-lg shadow-emerald-900/40 transition">Conectar e Validar</button>
-                        </div>
-                        <p id="conn-msg" class="mt-4 text-sm font-medium text-emerald-400"></p>
+                        <h3 class="text-lg font-bold mb-4 text-emerald-400">Licença do Sistema</h3>
                     </div>
                 </div>
-
-                <!-- Aba Configurações (Completa com Parâmetros do Bot) -->
-                <div id="tab-settings" class="tab-content hidden space-y-6">
-                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl max-w-2xl">
-                        <h3 class="text-lg font-bold mb-2 text-emerald-400">Parâmetros de Operação do Bot (IA)</h3>
-                        <p class="text-sm text-gray-400 mb-6">Configure os gatilhos de entrada, gerenciamento de risco e alavancagem padrão.</p>
-                        
-                        <div class="space-y-5">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Alavancagem Padrão (X)</label>
-                                    <input type="number" id="config-leverage" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Risco por Operação (%)</label>
-                                    <input type="number" id="config-risk" value="2.5" step="0.1" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Stop Loss (%)</label>
-                                    <input type="number" id="config-sl" value="1.5" step="0.1" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Take Profit (%)</label>
-                                    <input type="number" id="config-tp" value="3.0" step="0.1" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Timeframe de Análise IA</label>
-                                <select id="config-timeframe" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
-                                    <option value="15m">15 Minutos (Scalping)</option>
-                                    <option value="1h" selected>1 Hora (Day Trade)</option>
-                                    <option value="4h">4 Horas (Swing)</option>
-                                </select>
-                            </div>
-
-                            <button onclick="saveBotSettings()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-bold text-black shadow-lg shadow-emerald-900/40 transition">Salvar Configurações</button>
-                        </div>
-                        <p id="config-msg" class="mt-4 text-sm font-medium text-emerald-400"></p>
+                <div id="section-referencias" class="main-section hidden space-y-6">
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl max-w-xl">
+                        <h3 class="text-lg font-bold mb-4 text-emerald-400">Referências e Indicações</h3>
+                    </div>
+                </div>
+                <div id="section-configuracoes" class="main-section hidden space-y-6">
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl max-w-xl">
+                        <h3 class="text-lg font-bold mb-4 text-emerald-400">Configurações Gerais da Conta</h3>
                     </div>
                 </div>
             </main>
@@ -183,135 +279,52 @@
     </div>
 
     <script>
-        const API_URL = "https://seu-backend.onrender.com"; 
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(el => {
+        function switchMainTab(sectionId) {
+            document.querySelectorAll('.main-section').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('nav button').forEach(el => {
                 el.classList.remove('bg-gradient-to-r', 'from-emerald-600', 'to-teal-700', 'text-white', 'shadow-lg', 'shadow-emerald-900/30', 'font-semibold');
                 el.classList.add('text-gray-400', 'hover:bg-gray-800/80', 'hover:text-emerald-400', 'font-medium');
             });
 
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
-            const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.classList.add('bg-gradient-to-r', 'from-emerald-600', 'to-teal-700', 'text-white', 'shadow-lg', 'shadow-emerald-900/30', 'font-semibold');
-            activeBtn.classList.remove('text-gray-400', 'hover:bg-gray-800/80', 'hover:text-emerald-400', 'font-medium');
+            document.getElementById('section-' + sectionId).classList.remove('hidden');
+            
+            // Highlight sidebar active item
+            event.currentTarget.classList.add('bg-gradient-to-r', 'from-emerald-600', 'to-teal-700', 'text-white', 'shadow-lg', 'shadow-emerald-900/30', 'font-semibold');
+            event.currentTarget.classList.remove('text-gray-400', 'hover:bg-gray-800/80', 'hover:text-emerald-400', 'font-medium');
 
             const titles = {
                 'dashboard': 'Dashboard',
-                'trades': 'Trades & Bots',
+                'bots': 'Bots de Trading',
                 'gas': 'Saldo de Gás',
-                'exchange': 'Conexão de Corretoras',
-                'settings': 'Configurações'
+                'licenca': 'Licença',
+                'referencias': 'Referências',
+                'configuracoes': 'Configurações'
             };
-            document.getElementById('page-title').innerText = titles[tabId];
+            document.getElementById('page-title').innerText = titles[sectionId];
         }
 
-        async function fetchGasBalance() {
-            try {
-                const response = await fetch(`${API_URL}/api/gas/balance`);
-                const data = await response.json();
-                document.getElementById('gas-display-header').innerText = `Gás: $${data.gas_balance.toFixed(2)}`;
-                document.getElementById('gas-balance-card').innerText = `USDT $${data.gas_balance.toFixed(2)}`;
-            } catch (e) {
-                console.error("Erro ao buscar saldo de gás");
-            }
+        function switchBotTab(tabName) {
+            document.querySelectorAll('.bot-tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.bot-tab-btn').forEach(el => {
+                el.classList.remove('bg-emerald-600', 'text-black', 'font-bold');
+                el.classList.add('text-gray-400', 'hover:bg-gray-800', 'hover:text-emerald-400', 'font-semibold');
+            });
+
+            document.getElementById('bot-tab-' + tabName).classList.remove('hidden');
+            const activeBtn = document.getElementById('btn-' + tabName);
+            activeBtn.classList.add('bg-emerald-600', 'text-black', 'font-bold');
+            activeBtn.classList.remove('text-gray-400', 'hover:bg-gray-800', 'hover:text-emerald-400', 'font-semibold');
         }
 
-        async function connectExchange() {
-            const exchange = document.getElementById('conn-exchange').value;
-            const apiKey = document.getElementById('conn-apikey').value;
-            const apiSecret = document.getElementById('conn-apisecret').value;
-            const msgEl = document.getElementById('conn-msg');
-
-            msgEl.innerText = "Conectando...";
-            try {
-                const response = await fetch(`${API_URL}/api/connect`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ exchange, apiKey, apiSecret })
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    msgEl.className = "mt-4 text-sm text-emerald-400 font-semibold";
-                    msgEl.innerText = data.message;
-                } else {
-                    msgEl.className = "mt-4 text-sm text-rose-400 font-semibold";
-                    msgEl.innerText = data.error;
-                }
-            } catch (e) {
-                msgEl.className = "mt-4 text-sm text-rose-400 font-semibold";
-                msgEl.innerText = "Erro de conexão com o servidor.";
-            }
+        function saveBotSettingsVid() {
+            const msg = document.getElementById('cfg-saved-msg');
+            msg.innerText = "Configurações salvas com sucesso!";
+            setTimeout(() => { msg.innerText = ""; }, 3000);
         }
 
-        async function controlBot(action) {
-            const exchange = document.getElementById('bot-exchange').value;
-            const symbol = document.getElementById('bot-symbol').value;
-            const msgEl = document.getElementById('bot-status-msg');
-
-            try {
-                const response = await fetch(`${API_URL}/api/bot/control`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action, exchange, symbol })
-                });
-                const data = await response.json();
-                msgEl.innerText = data.message || data.error;
-            } catch (e) {
-                msgEl.innerText = "Erro ao controlar o bot.";
-            }
+        function openNewBotModal() {
+            alert("Modal de criação de novo bot.");
         }
-
-        async function registerDeposit() {
-            const amount = parseFloat(document.getElementById('deposit-amount').value);
-            const txHash = document.getElementById('deposit-txhash').value;
-            const msgEl = document.getElementById('gas-msg');
-
-            try {
-                const response = await fetch(`${API_URL}/api/gas/deposit`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount, txHash })
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    msgEl.className = "mt-4 text-sm text-emerald-400 font-semibold";
-                    msgEl.innerText = data.message;
-                    fetchGasBalance();
-                } else {
-                    msgEl.className = "mt-4 text-sm text-rose-400 font-semibold";
-                    msgEl.innerText = data.error;
-                }
-            } catch (e) {
-                msgEl.innerText = "Erro ao registrar depósito.";
-            }
-        }
-
-        async function saveBotSettings() {
-            const leverage = document.getElementById('config-leverage').value;
-            const risk = document.getElementById('config-risk').value;
-            const stopLoss = document.getElementById('config-sl').value;
-            const takeProfit = document.getElementById('config-tp').value;
-            const timeframe = document.getElementById('config-timeframe').value;
-            const msgEl = document.getElementById('config-msg');
-
-            try {
-                const response = await fetch(`${API_URL}/api/settings`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ leverage, risk, stopLoss, takeProfit, timeframe })
-                });
-                const data = await response.json();
-                msgEl.className = "mt-4 text-sm text-emerald-400 font-semibold";
-                msgEl.innerText = "Configurações salvas com sucesso!";
-            } catch (e) {
-                msgEl.className = "mt-4 text-sm text-emerald-400 font-semibold";
-                msgEl.innerText = "Configurações aplicadas localmente.";
-            }
-        }
-
-        fetchGasBalance();
     </script>
 </body>
 </html>
