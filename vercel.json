@@ -1,13 +1,9 @@
 {
-  "cleanUrls": true,
+  "outputDirectory": "templates",
   "rewrites": [
     {
-      "source": "/",
-      "destination": "/templates/index.html"
-    },
-    {
-      "source": "/:path*",
-      "destination": "/templates/:path*"
+      "source": "/(.*)",
+      "destination": "/$1"
     }
   ]
 }
