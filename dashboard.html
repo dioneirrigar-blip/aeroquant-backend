@@ -3,256 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aeroquant - Painel de Controle</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>AeroQuant — Inteligência & IA Multicorretora</title>
     <style>
-        .neon-glow {
-            text-shadow: 0 0 10px rgba(52, 211, 153, 0.4), 0 0 20px rgba(52, 211, 153, 0.2);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            color: #ffffff;
+        }
+        .btn-header {
+            background-color: #10b981;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        .btn-header:hover {
+            background-color: #059669;
+        }
+        .hero {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+        h1 span {
+            color: #10b981;
+        }
+        p.subtitle {
+            color: #9ca3af;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 35px;
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .exchanges {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .exchanges span {
+            color: #6b7280;
+            font-size: 0.85rem;
+            margin-right: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .exchange-tag {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .btn-main {
+            display: inline-block;
+            background-color: #10b981;
+            color: #ffffff;
+            padding: 16px 36px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+            transition: all 0.2s;
+        }
+        .btn-main:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        .card {
+            background: #131b2e;
+            border: 1px solid #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+        }
+        .card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+        .card p {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
     </style>
 </head>
-<body class="bg-gray-950 text-gray-100 font-sans selection:bg-emerald-500 selection:text-black">
+<body>
 
-    <div class="flex h-screen overflow-hidden">
-        <div class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col justify-between shadow-xl">
-            <div class="p-6">
-                <h1 class="text-2xl font-black tracking-wider text-emerald-400 neon-glow">Aeroquant</h1>
-                <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest font-semibold">AI Quant Trading System</p>
-                
-                <nav class="mt-8 space-y-2">
-                    <button onclick="switchSection('dashboard')" class="w-full text-left px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-semibold shadow-lg shadow-emerald-900/30 transition nav-btn flex items-center space-x-3" id="nav-dashboard"><span>Dashboard</span></button>
-                    <button onclick="switchSection('bots')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition nav-btn" id="nav-bots">Bots</button>
-                    <button onclick="switchSection('gas')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition nav-btn" id="nav-gas">Saldo de Gás</button>
-                    <button onclick="switchSection('licenca')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition nav-btn" id="nav-licenca">Licença</button>
-                    <button onclick="switchSection('referencias')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition nav-btn" id="nav-referencias">Referências</button>
-                    <button onclick="switchSection('configuracoes')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition nav-btn" id="nav-configuracoes">Configurações</button>
-                </nav>
-            </div>
-            <div class="p-6 border-t border-gray-800 bg-gray-900/50">
-                <span class="text-xs text-emerald-400 flex items-center font-medium"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-2"></span> Sistema Online</span>
-            </div>
+    <header>
+        <div class="logo">AERO QUANT</div>
+        <a href="dashboard.html" class="btn-header">Começar Agora</a>
+    </header>
+
+    <section class="hero">
+        <div class="badge">TECNOLOGIA QUANTITATIVA & IA MULTICORRETORA</div>
+        <h1>Opere no Mercado Cripto com a Precisão de <span>Algoritmos Avançados</span></h1>
+        <p class="subtitle">Automatize suas entradas e saídas nas principais corretoras do mercado 24h por dia. Leitura de tendência em múltiplos timeframes, gestão de risco automatizada e sem interferência emocional.</p>
+        
+        <div class="exchanges">
+            <span>Conecte sua API:</span>
+            <div class="exchange-tag">BYBIT</div>
+            <div class="exchange-tag">BINANCE</div>
+            <div class="exchange-tag">BINGX</div>
+            <div class="exchange-tag">OKX</div>
+            <div class="exchange-tag">KUCOIN</div>
         </div>
 
-        <div class="flex-1 flex flex-col overflow-y-auto bg-gray-950">
-            <header class="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 px-8 py-5 flex justify-between items-center sticky top-0 z-10">
-                <h2 id="page-title" class="text-xl font-bold tracking-tight text-emerald-400">Dashboard Aeroquant</h2>
-                <div id="gas-display-header" class="bg-gray-800/90 border border-emerald-500/30 px-4 py-2 rounded-xl text-sm font-semibold shadow-inner text-emerald-400">
-                    Gás: $40.00 USDT
-                </div>
-            </header>
+        <a href="dashboard.html" class="btn-main">Ativar o AeroQuant</a>
+    </section>
 
-            <main class="p-8">
-                <div id="sec-dashboard" class="app-section space-y-6">
-                    <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-bold text-white">Bem-vindo ao Aeroquant, Trader!</h3>
-                            <p class="text-xs text-gray-400 mt-1">Monitore seu status, licenças, saldo de gás e o histórico geral das suas operações.</p>
-                        </div>
-                        <span class="bg-emerald-950 text-emerald-400 border border-emerald-500/30 px-4 py-2 rounded-xl font-bold text-xs">Conta Verificada</span>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
-                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Status da Licença</p>
-                            <div class="flex items-center space-x-2 mt-3">
-                                <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
-                                <p class="text-2xl font-black text-emerald-400 neon-glow">Ativa</p>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-2">Expira em: 31/12/2026</p>
-                        </div>
-
-                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
-                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Saldo de Gás Disponível</p>
-                            <p class="text-3xl font-black mt-3 text-emerald-400 neon-glow">$40.00 <span class="text-sm font-semibold text-gray-400">USDT</span></p>
-                            <p class="text-xs text-emerald-500 mt-2">Suficiente para operar</p>
-                        </div>
-
-                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
-                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Bots Ativos</p>
-                            <p class="text-3xl font-black mt-3 text-emerald-400 neon-glow">1 / 5</p>
-                            <p class="text-xs text-gray-500 mt-2">Moeda: BTC/USDT (Ativo)</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-4">
-                        <h4 class="text-sm font-bold text-emerald-400 uppercase tracking-wider">Histórico de Aquisições & Recargas</h4>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-sm text-gray-300">
-                                <thead class="bg-gray-950 text-gray-400 uppercase text-xs">
-                                    <tr>
-                                        <th class="p-3">Tipo</th>
-                                        <th class="p-3">Detalhes / Plano</th>
-                                        <th class="p-3">Valor</th>
-                                        <th class="p-3">Rede / Status</th>
-                                        <th class="p-3">TX Hash</th>
-                                        <th class="p-3">Data</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-800 text-xs">
-                                    <tr>
-                                        <td class="p-3 font-bold text-emerald-400">Recarga de Gás</td>
-                                        <td class="p-3">5.000 Gás</td>
-                                        <td class="p-3 font-bold">$40.00 USDT</td>
-                                        <td class="p-3"><span class="bg-emerald-950 text-emerald-400 px-2 py-1 rounded border border-emerald-500/30">Confirmado (BEP20)</span></td>
-                                        <td class="p-3 font-mono text-gray-500">0x8f9c...31ae</td>
-                                        <td class="p-3 text-gray-400">31/07/2026 23:30</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-3 font-bold text-teal-400">Ativação de Licença</td>
-                                        <td class="p-3">Licença Anual Aeroquant</td>
-                                        <td class="p-3 font-bold">$150.00 USDT</td>
-                                        <td class="p-3"><span class="bg-emerald-950 text-emerald-400 px-2 py-1 rounded border border-emerald-500/30">Ativa</span></td>
-                                        <td class="p-3 font-mono text-gray-500">0x4a12...77bc</td>
-                                        <td class="p-3 text-gray-400">01/01/2026 10:00</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="sec-bots" class="app-section hidden space-y-6">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl gap-4">
-                        <div>
-                            <h3 class="text-xl font-black text-emerald-400">Bots de Trading Aeroquant</h3>
-                            <p class="text-sm text-gray-400 mt-1">Cada bot opera uma moeda com a sua própria configuração</p>
-                        </div>
-                        <span class="bg-emerald-950 text-emerald-400 border border-emerald-500/30 px-4 py-2 rounded-xl font-bold text-sm flex items-center">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-2"></span> Ligado
-                        </span>
-                    </div>
-
-                    <div class="flex space-x-2 border-b border-gray-800 pb-4">
-                        <button onclick="switchBotTab('visao')" class="px-5 py-2.5 rounded-xl bg-emerald-600 text-black font-bold transition bot-tab-btn" id="btn-bot-visao">Visão Geral</button>
-                        <button onclick="switchBotTab('operacoes')" class="px-5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-emerald-400 font-semibold transition bot-tab-btn" id="btn-bot-operacoes">Operações</button>
-                        <button onclick="switchBotTab('config')" class="px-5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-emerald-400 font-semibold transition bot-tab-btn" id="btn-bot-config">Configurações</button>
-                    </div>
-
-                    <div id="bot-tab-visao" class="bot-content space-y-6">
-                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-4">
-                            <div class="flex justify-between items-center">
-                                <span class="font-black text-lg text-white">BTC/USDT</span>
-                                <span class="bg-gray-800 text-emerald-400 text-xs px-3 py-1 rounded-lg font-bold border border-emerald-500/20">Alav: 10x | Real</span>
-                            </div>
-                            <p class="text-xs text-gray-300 bg-gray-950 p-4 rounded-xl border border-gray-800">
-                                <strong class="text-emerald-400">Mercado:</strong> Consolidado (ADX 20). Aguardando rompimento com volume institucional.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div id="bot-tab-operacoes" class="bot-content hidden space-y-6">
-                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
-                            <h4 class="text-md font-bold text-emerald-400 mb-4">Histórico de Ordens</h4>
-                            <p class="text-xs text-gray-400">Nenhuma ordem recente registrada na sessão atual.</p>
-                        </div>
-                    </div>
-
-                    <div id="bot-tab-config" class="bot-content hidden space-y-6">
-                        <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl space-y-6">
-                            <h4 class="text-lg font-bold text-emerald-400">Configuração padrão dos bots</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Exchange</label>
-                                    <select class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white">
-                                        <option>Bitget</option>
-                                        <option>Binance</option>
-                                        <option>Bybit</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Alavancagem Máxima</label>
-                                    <input type="number" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white">
-                                </div>
-                            </div>
-                            <div class="bg-gray-950 p-5 rounded-xl border border-gray-800 space-y-3">
-                                <h6 class="text-xs font-bold text-emerald-400 uppercase">Estratégia Aeroquant Combinada</h6>
-                                <p class="text-xs text-gray-400">O bot combina as 4 estratégias por votação quantitativa:</p>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs pt-2">
-                                    <div class="bg-gray-900 p-3 rounded-lg border border-emerald-500/30 text-emerald-400">Trend Following</div>
-                                    <div class="bg-gray-900 p-3 rounded-lg border border-gray-800 text-gray-300">Scalping + Momentum</div>
-                                    <div class="bg-gray-900 p-3 rounded-lg border border-gray-800 text-gray-300">Mean Reversion</div>
-                                    <div class="bg-gray-900 p-3 rounded-lg border border-gray-800 text-gray-300">Smart Money (SMC)</div>
-                                </div>
-                            </div>
-                            <button onclick="alert('Configurações salvas!')" class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-bold text-black transition">Salvar Configurações</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="sec-gas" class="app-section hidden space-y-6 max-w-4xl mx-auto">
-                    <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl flex justify-between items-center">
-                        <div>
-                            <p class="text-xs uppercase tracking-widest text-gray-400 font-semibold">Ganhos de Indicação</p>
-                            <p class="text-2xl font-black text-emerald-400 neon-glow mt-1">$0.00</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-xs uppercase tracking-widest text-gray-400 font-semibold">Comissões</p>
-                            <p class="text-sm font-bold text-emerald-400 mt-1">15% - 10% - 5%</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-4">
-                        <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wider">Selecione o plano de gás</h3>
-                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                            <button class="bg-gray-950 border border-gray-800 p-4 rounded-xl text-center"><span class="block text-sm font-bold text-white">1.000</span><span class="block text-xs text-emerald-400 font-semibold mt-1">$10</span></button>
-                            <button class="bg-gray-950 border border-gray-800 p-4 rounded-xl text-center"><span class="block text-sm font-bold text-white">2.000</span><span class="block text-xs text-emerald-400 font-semibold mt-1">$20</span></button>
-                            <button class="bg-emerald-950/25 border border-emerald-500 p-4 rounded-xl text-center"><span class="block text-sm font-bold text-white">5.000</span><span class="block text-xs text-emerald-400 font-semibold mt-1">$40</span></button>
-                            <button class="bg-gray-950 border border-gray-800 p-4 rounded-xl text-center"><span class="block text-sm font-bold text-white">10.000</span><span class="block text-xs text-emerald-400 font-semibold mt-1">$100</span></button>
-                            <button class="bg-gray-950 border border-gray-800 p-4 rounded-xl text-center"><span class="block text-sm font-bold text-white">20.000</span><span class="block text-xs text-emerald-400 font-semibold mt-1">$150</span></button>
-                        </div>
-                    </div>
-
-                    <div class="bg-amber-950/30 border border-amber-500/30 p-4 rounded-xl flex items-center space-x-3">
-                        <span class="text-amber-400 text-lg">⚠️</span>
-                        <p class="text-xs text-gray-300">Envie apenas USDT na rede <strong class="text-white">BEP20 (BSC)</strong>.</p>
-                    </div>
-
-                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl flex flex-col items-center text-center space-y-6">
-                        <p class="text-3xl font-black text-emerald-400 neon-glow">$40.00 <span class="text-lg">USDT</span></p>
-                        <div class="w-full flex items-center bg-gray-950 border border-gray-800 rounded-xl p-3">
-                            <input type="text" readonly value="0xFC69e78aD9E3869e1D98683897e06509B9829c46" class="bg-transparent text-xs text-gray-300 w-full focus:outline-none font-mono">
-                            <button onclick="navigator.clipboard.writeText('0xFC69e78aD9E3869e1D98683897e06509B9829c46'); alert('Copiado!');" class="bg-gray-800 text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-bold ml-2">Copiar</button>
-                        </div>
-                        <div class="w-full space-y-3">
-                            <input type="text" placeholder="Cole o TX Hash da transação (0x...)" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs font-mono">
-                            <button onclick="alert('Comprovante enviado com sucesso!')" class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-bold text-black transition">Enviar Comprovante</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="sec-licenca" class="app-section hidden space-y-6"><div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl"><h3 class="text-lg font-bold text-emerald-400">Licença Aeroquant</h3><p class="text-xs text-gray-400 mt-2">Sua licença está ativa e regular.</p></div></div>
-                <div id="sec-referencias" class="app-section hidden space-y-6"><div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl"><h3 class="text-lg font-bold text-emerald-400">Indicações e Bônus</h3></div></div>
-                <div id="sec-configuracoes" class="app-section hidden space-y-6"><div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl"><h3 class="text-lg font-bold text-emerald-400">Configurações Gerais da Conta</h3></div></div>
-            </main>
+    <div class="features">
+        <div class="card">
+            <h3>Conexão Multicorretora</h3>
+            <p>Opere na sua exchange de preferência. Conecte suas chaves de API com segurança total e sem permissão para saques.</p>
+        </div>
+        <div class="card">
+            <h3>Análise por IA</h3>
+            <p>Cruzamento de médias móveis, RSI e volatilidade (ATR) em múltiplos timeframes para identificar altas probabilidades.</p>
+        </div>
+        <div class="card">
+            <h3>Execução em Nuvem 24/7</h3>
+            <p>Não precisa deixar o computador ligado. Seu bot roda em servidores de alta velocidade conectados via API.</p>
         </div>
     </div>
 
-    <script>
-        function switchSection(secId) {
-            document.querySelectorAll('.app-section').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(el => {
-                el.classList.remove('bg-gradient-to-r', 'from-emerald-600', 'to-teal-700', 'text-white', 'shadow-lg', 'shadow-emerald-900/30', 'font-semibold');
-                el.classList.add('text-gray-400', 'hover:bg-gray-800/80', 'hover:text-emerald-400', 'font-medium');
-            });
-
-            document.getElementById('sec-' + secId).classList.remove('hidden');
-            const activeBtn = document.getElementById('nav-' + secId);
-            activeBtn.classList.add('bg-gradient-to-r', 'from-emerald-600', 'to-teal-700', 'text-white', 'shadow-lg', 'shadow-emerald-900/30', 'font-semibold');
-            activeBtn.classList.remove('text-gray-400', 'hover:bg-gray-800/80', 'hover:text-emerald-400', 'font-medium');
-        }
-
-        function switchBotTab(tabId) {
-            document.querySelectorAll('.bot-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.bot-tab-btn').forEach(el => {
-                el.classList.remove('bg-emerald-600', 'text-black', 'font-bold');
-                el.classList.add('text-gray-400', 'hover:bg-gray-800', 'hover:text-emerald-400', 'font-semibold');
-            });
-
-            document.getElementById('bot-tab-' + tabId).classList.remove('hidden');
-            const btn = document.getElementById('btn-bot-' + tabId);
-            btn.classList.add('bg-emerald-600', 'text-black', 'font-bold');
-            btn.classList.remove('text-gray-400', 'hover:bg-gray-800', 'hover:text-emerald-400', 'font-semibold');
-        }
-    </script>
 </body>
 </html>
