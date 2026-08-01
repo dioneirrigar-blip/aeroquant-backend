@@ -1,5 +1,4 @@
-flask
-flask-cors
-gunicorn
-requests
-ccxt
+Flask==3.0.0
+flask-cors==4.0.0
+ccxt==4.2.50
+gunicorn==21.2.0
