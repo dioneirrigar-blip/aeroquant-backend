@@ -3,108 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AeroQuant — Inteligência Quantitativa & IA para Cripto</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>AeroQuant — Inteligência & IA Multicorretora</title>
     <style>
-        body { background-color: #0d0f12; color: #f3f4f6; font-family: sans-serif; }
-        .accent-green { color: #10b981; }
-        .bg-card { background-color: #161b22; border: 1px solid #2d3748; }
-        .btn-primary { background-color: #10b981; color: #000; font-weight: bold; }
-        .btn-primary:hover { background-color: #059669; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            color: #ffffff;
+        }
+        .btn-header {
+            background-color: #10b981;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        .btn-header:hover {
+            background-color: #059669;
+        }
+        .hero {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+        h1 span {
+            color: #10b981;
+        }
+        p.subtitle {
+            color: #9ca3af;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 35px;
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .exchanges {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .exchanges span {
+            color: #6b7280;
+            font-size: 0.85rem;
+            margin-right: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .exchange-tag {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .btn-main {
+            display: inline-block;
+            background-color: #10b981;
+            color: #ffffff;
+            padding: 16px 36px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+            transition: all 0.2s;
+        }
+        .btn-main:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        .card {
+            background: #131b2e;
+            border: 1px solid #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+        }
+        .card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+        .card p {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
     </style>
 </head>
-<body class="antialiased">
+<body>
 
-    <!-- HEADER / NAV -->
-    <nav class="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto border-b border-gray-800">
-        <div class="text-2xl font-black tracking-wider flex items-center gap-2">
-            <span class="accent-green">AERO</span>QUANT
-        </div>
-        <div>
-            <a href="#planos" class="btn-primary px-5 py-2.5 rounded-lg text-sm transition">Começar Agora</a>
-        </div>
-    </nav>
+    <header>
+        <div class="logo">AERO QUANT</div>
+        <a href="dashboard.html" class="btn-header">Começar Agora</a>
+    </header>
 
-    <!-- HERO SECTION -->
-    <section class="max-w-5xl mx-auto text-center px-6 py-20">
-        <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
-            Tecnologia Quantitativa & IA Multicorretora
-        </span>
-        <h1 class="text-4xl md:text-6xl font-extrabold mt-6 leading-tight">
-            Opere no Mercado Cripto com a Precisão de <span class="accent-green">Algoritmos Avançados</span>
-        </h1>
-        <p class="text-gray-400 text-lg md:text-xl mt-6 max-w-3xl mx-auto">
-            Automatize suas entradas e saídas nas principais corretoras do mercado 24h por dia. Leitura de tendência em múltiplos timeframes, gestão de risco automatizada e sem interferência emocional.
-        </p>
+    <section class="hero">
+        <div class="badge">TECNOLOGIA QUANTITATIVA & IA MULTICORRETORA</div>
+        <h1>Opere no Mercado Cripto com a Precisão de <span>Algoritmos Avançados</span></h1>
+        <p class="subtitle">Automatize suas entradas e saídas nas principais corretoras do mercado 24h por dia. Leitura de tendência em múltiplos timeframes, gestão de risco automatizada e sem interferência emocional.</p>
         
-        <!-- CORRETORAS COMPATÍVEIS -->
-        <div class="mt-8 flex flex-wrap justify-center items-center gap-3 text-xs text-gray-400 font-semibold uppercase tracking-widest">
+        <div class="exchanges">
             <span>Conecte sua API:</span>
-            <span class="bg-gray-800 text-gray-200 px-3 py-1 rounded border border-gray-700">Bybit</span>
-            <span class="bg-gray-800 text-gray-200 px-3 py-1 rounded border border-gray-700">Binance</span>
-            <span class="bg-gray-800 text-gray-200 px-3 py-1 rounded border border-gray-700">BingX</span>
-            <span class="bg-gray-800 text-gray-200 px-3 py-1 rounded border border-gray-700">OKX</span>
-            <span class="bg-gray-800 text-gray-200 px-3 py-1 rounded border border-gray-700">KuCoin</span>
+            <div class="exchange-tag">BYBIT</div>
+            <div class="exchange-tag">BINANCE</div>
+            <div class="exchange-tag">BINGX</div>
+            <div class="exchange-tag">OKX</div>
+            <div class="exchange-tag">KUCOIN</div>
         </div>
 
-        <div class="mt-10 flex justify-center gap-4">
-            <a href="#planos" class="btn-primary px-8 py-4 rounded-xl text-lg transition shadow-lg shadow-emerald-900/40">
-                Ativar o AeroQuant
-            </a>
-        </div>
+        <a href="dashboard.html" class="btn-main">Ativar o AeroQuant</a>
     </section>
 
-    <!-- RECURSOS / PILARES -->
-    <section class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-8">
-        <div class="bg-card p-8 rounded-2xl">
-            <div class="text-emerald-400 text-3xl mb-4">🔗</div>
-            <h3 class="text-xl font-bold mb-2">Conexão Multicorretora</h3>
-            <p class="text-gray-400 text-sm">Opere na sua exchange de preferência. Conecte suas chaves de API com segurança total e sem permissão para saques.</p>
+    <div class="features">
+        <div class="card">
+            <h3>Conexão Multicorretora</h3>
+            <p>Opere na sua exchange de preferência. Conecte suas chaves de API com segurança total e sem permissão para saques.</p>
         </div>
-        <div class="bg-card p-8 rounded-2xl">
-            <div class="text-emerald-400 text-3xl mb-4">🧠</div>
-            <h3 class="text-xl font-bold mb-2">Análise por IA</h3>
-            <p class="text-gray-400 text-sm">Cruzamento de médias móveis, RSI e volatilidade (ATR) em múltiplos timeframes para identificar altas probabilidades.</p>
+        <div class="card">
+            <h3>Análise por IA</h3>
+            <p>Cruzamento de médias móveis, RSI e volatilidade (ATR) em múltiplos timeframes para identificar altas probabilidades.</p>
         </div>
-        <div class="bg-card p-8 rounded-2xl">
-            <div class="text-emerald-400 text-3xl mb-4">⚡</div>
-            <h3 class="text-xl font-bold mb-2">Execução em Nuvem 24/7</h3>
-            <p class="text-gray-400 text-sm">Não precisa deixar o computador ligado. Seu bot roda em servidores de alta velocidade conectados via API.</p>
+        <div class="card">
+            <h3>Execução em Nuvem 24/7</h3>
+            <p>Não precisa deixar o computador ligado. Seu bot roda em servidores de alta velocidade conectados via API.</p>
         </div>
-    </section>
-
-    <!-- SEÇÃO DE PLANOS -->
-    <section id="planos" class="max-w-4xl mx-auto px-6 py-16 text-center">
-        <h2 class="text-3xl font-bold mb-4">Escolha o seu Plano de Acesso</h2>
-        <p class="text-gray-400 mb-12">Conecte a API da sua corretora e comande suas operações.</p>
-        
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="bg-card p-8 rounded-2xl text-left border-gray-700">
-                <h3 class="text-xl font-bold">Acesso por Gás / Créditos</h3>
-                <p class="text-gray-400 text-sm mt-1">Ideal para quem quer começar com banca menor</p>
-                <div class="text-3xl font-extrabold mt-6 mb-6">A partir de $10 <span class="text-sm font-normal text-gray-400">USDT</span></div>
-                <ul class="text-sm text-gray-300 space-y-3 mb-8">
-                    <li>✓ Acesso a todos os pares (Top 10 Criptos)</li>
-                    <li>✓ Notificações no Telegram em tempo real</li>
-                    <li>✓ Compatível com todas as corretoras suportadas</li>
-                </ul>
-                <button class="w-full btn-primary py-3 rounded-lg">Carregar Créditos</button>
-            </div>
-
-            <div class="bg-card p-8 rounded-2xl text-left border-emerald-500 relative">
-                <span class="absolute -top-3 right-6 bg-emerald-500 text-black text-xs font-bold px-3 py-1 rounded-full">MAIS POPULAR</span>
-                <h3 class="text-xl font-bold">Licença Anual Pro</h3>
-                <p class="text-gray-400 text-sm mt-1">Para quem busca alta performance contínua</p>
-                <div class="text-3xl font-extrabold mt-6 mb-6">Consulte <span class="text-sm font-normal text-gray-400">condições VIP</span></div>
-                <ul class="text-sm text-gray-300 space-y-3 mb-8">
-                    <li>✓ Licença ilimitada por 12 meses</li>
-                    <li>✓ Prioridade na execução de ordens</li>
-                    <li>✓ Suporte VIP e atualizações de IA</li>
-                </ul>
-                <button class="w-full btn-primary py-3 rounded-lg">Falar com Consultor</button>
-            </div>
-        </div>
-    </section>
+    </div>
 
 </body>
 </html>
