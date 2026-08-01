@@ -6,276 +6,247 @@
     <title>AeroQuant - Painel de Controle</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-900 text-white min-h-screen font-sans">
+<body class="bg-gray-900 text-white font-sans">
 
-    <header class="border-b border-slate-800 p-4 flex justify-between items-center max-w-7xl mx-auto">
-        <div class="flex items-center space-x-2">
-            <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
-            <h1 class="text-xl font-bold tracking-wider text-emerald-400">AEROQUANT</h1>
-        </div>
-        <span id="badge-status" class="px-3 py-1 bg-slate-800 text-xs rounded-full border border-slate-700 text-slate-400">API Desconectada</span>
-    </header>
-
-    <main class="max-w-7xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <!-- Coluna Esquerda: Conexão e Disparo -->
-        <div class="space-y-6">
-            <!-- Card Conexão -->
-            <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700">
-                <h2 class="text-sm font-semibold text-slate-300 mb-4 flex items-center gap-2">🔑 Conectar Corretora</h2>
-                <div class="space-y-3">
-                    <div>
-                        <label class="text-xs text-slate-400">CORRETORA</label>
-                        <select id="exchange" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm focus:outline-none focus:border-emerald-500">
-                            <option value="bybit">Bybit (Derivativos/Futures)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-xs text-slate-400">API KEY</label>
-                        <input id="apiKey" type="text" placeholder="Cole sua API Key" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm focus:outline-none focus:border-emerald-500">
-                    </div>
-                    <div>
-                        <label class="text-xs text-slate-400">API SECRET</label>
-                        <input id="apiSecret" type="password" placeholder="Cole seu Secret Key" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm focus:outline-none focus:border-emerald-500">
-                    </div>
-                    <button onclick="conectarAPI()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded transition">Validar e Conectar API</button>
-                </div>
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar / Menu Lateral -->
+        <div class="w-64 bg-gray-800 border-r border-gray-700 flex flex-col justify-between">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold text-indigo-400">AeroQuant</h1>
+                <p class="text-xs text-gray-400 mt-1">Trading Automatizado</p>
+                
+                <nav class="mt-8 space-y-2">
+                    <button onclick="switchTab('dashboard')" class="w-full text-left px-4 py-2.5 rounded-lg bg-indigo-600 text-white font-medium transition tab-btn" id="btn-dashboard">Dashboard</button>
+                    <button onclick="switchTab('trades')" class="w-full text-left px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 transition tab-btn" id="btn-trades">Trades & Bots</button>
+                    <button onclick="switchTab('gas')" class="w-full text-left px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 transition tab-btn" id="btn-gas">Saldo de Gás</button>
+                    <button onclick="switchTab('exchange')" class="w-full text-left px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 transition tab-btn" id="btn-exchange">Corretoras</button>
+                    <button onclick="switchTab('settings')" class="w-full text-left px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 transition tab-btn" id="btn-settings">Configurações</button>
+                </nav>
             </div>
+            <div class="p-6 border-t border-gray-700">
+                <span class="text-xs text-green-400 flex items-center">● Sistema Online</span>
+            </div>
+        </div>
 
-            <!-- Card Disparo de Ordens -->
-            <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700">
-                <h2 class="text-sm font-semibold text-slate-300 mb-4 flex items-center gap-2">⚡ Disparo de Estratégia</h2>
-                <div class="space-y-3">
-                    <div>
-                        <label class="text-xs text-slate-400">ATIVO (PAR)</label>
-                        <select id="symbol" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm">
-                            <option value="BTC/USDT">BTC / USDT</option>
-                            <option value="ETH/USDT">ETH / USDT</option>
-                            <option value="SOL/USDT">SOL / USDT</option>
-                        </select>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="text-xs text-slate-400">VALOR ($ USDT)</label>
-                            <input id="amount" type="number" value="10" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm">
+        <!-- Conteúdo Principal -->
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            <header class="bg-gray-800 border-b border-gray-700 p-4 flex justify-between items-center shadow">
+                <h2 id="page-title" class="text-xl font-semibold">Dashboard</h2>
+                <div id="gas-display-header" class="bg-gray-700 px-3 py-1.5 rounded-lg text-sm">
+                    Gás: Carregando...
+                </div>
+            </header>
+
+            <main class="p-6">
+                <!-- Aba Dashboard -->
+                <div id="tab-dashboard" class="tab-content space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-gray-800 p-5 rounded-xl border border-gray-700">
+                            <p class="text-sm text-gray-400">Saldo Total Estimado</p>
+                            <p class="text-2xl font-bold mt-2">$0.00</p>
                         </div>
-                        <div>
-                            <label class="text-xs text-slate-400">ALAVANCAGEM</label>
-                            <input id="leverage" type="number" value="10" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm">
+                        <div class="bg-gray-800 p-5 rounded-xl border border-gray-700">
+                            <p class="text-sm text-gray-400">Bots Ativos</p>
+                            <p class="text-2xl font-bold mt-2 text-indigo-400">0</p>
+                        </div>
+                        <div class="bg-gray-800 p-5 rounded-xl border border-gray-700">
+                            <p class="text-sm text-gray-400">Saldo de Gás Disponível</p>
+                            <p id="gas-balance-card" class="text-2xl font-bold mt-2 text-green-400">USDT --</p>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="enviarOrdem('buy')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded transition">🚀 COMPRAR (LONG)</button>
-                        <button onclick="enviarOrdem('sell')" class="bg-rose-600 hover:bg-rose-500 text-white font-bold py-2 rounded transition">📉 VENDER (SHORT)</button>
+                </div>
+
+                <!-- Aba Trades & Bots -->
+                <div id="tab-trades" class="tab-content hidden space-y-6">
+                    <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+                        <h3 class="text-lg font-semibold mb-4">Controle do Robô de Trading</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Corretora</label>
+                                <select id="bot-exchange" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                                    <option value="bybit">Bybit</option>
+                                    <option value="binance">Binance</option>
+                                    <option value="okx">OKX</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Par de Moedas</label>
+                                <input type="text" id="bot-symbol" value="BTC/USDT" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                            </div>
+                        </div>
+                        <div class="flex space-x-4">
+                            <button onclick="controlBot('start')" class="bg-green-600 hover:bg-green-500 px-6 py-2.5 rounded-lg font-medium transition">Iniciar Bot</button>
+                            <button onclick="controlBot('stop')" class="bg-red-600 hover:bg-red-500 px-6 py-2.5 rounded-lg font-medium transition">Parar Bot</button>
+                        </div>
+                        <p id="bot-status-msg" class="mt-4 text-sm text-gray-400"></p>
                     </div>
                 </div>
-            </div>
+
+                <!-- Aba Saldo de Gás -->
+                <div id="tab-gas" class="tab-content hidden space-y-6">
+                    <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 max-w-xl">
+                        <h3 class="text-lg font-semibold mb-4">Adicionar Saldo de Gás (USDT - BEP20)</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Valor em USDT</label>
+                                <input type="number" id="deposit-amount" placeholder="50.00" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Hash da Transação (TxHash)</label>
+                                <input type="text" id="deposit-txhash" placeholder="0x..." class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                            </div>
+                            <button onclick="registerDeposit()" class="w-full bg-indigo-600 hover:bg-indigo-500 py-2.5 rounded-lg font-medium transition">Registrar Depósito</button>
+                        </div>
+                        <p id="gas-msg" class="mt-4 text-sm text-gray-400"></p>
+                    </div>
+                </div>
+
+                <!-- Aba Corretoras -->
+                <div id="tab-exchange" class="tab-content hidden space-y-6">
+                    <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 max-w-xl">
+                        <h3 class="text-lg font-semibold mb-4">Conectar API da Corretora</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Corretora</label>
+                                <select id="conn-exchange" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                                    <option value="bybit">Bybit</option>
+                                    <option value="binance">Binance</option>
+                                    <option value="okx">OKX</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">API Key</label>
+                                <input type="text" id="conn-apikey" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">API Secret</label>
+                                <input type="password" id="conn-apisecret" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                            </div>
+                            <button onclick="connectExchange()" class="w-full bg-indigo-600 hover:bg-indigo-500 py-2.5 rounded-lg font-medium transition">Conectar e Validar</button>
+                        </div>
+                        <p id="conn-msg" class="mt-4 text-sm text-gray-400"></p>
+                    </div>
+                </div>
+
+                <!-- Aba Configurações -->
+                <div id="tab-settings" class="tab-content hidden space-y-6">
+                    <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+                        <h3 class="text-lg font-semibold mb-2">Configurações Gerais</h3>
+                        <p class="text-sm text-gray-400">Ajuste parâmetros globais de risco e notificações do sistema.</p>
+                    </div>
+                </div>
+            </main>
         </div>
-
-        <!-- Coluna Direita: Dashboard, Posições e Logs -->
-        <div class="md:col-span-2 space-y-6">
-            
-            <!-- Cards Resumo -->
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700">
-                    <span class="text-xs text-slate-400 block mb-1">SALDO DE MARGEM (USDT)</span>
-                    <span id="saldo-usdt" class="text-2xl font-bold text-white">$ --.--</span>
-                </div>
-                <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700">
-                    <span class="text-xs text-slate-400 block mb-1">STATUS DO ROBÔ</span>
-                    <span id="status-robo" class="text-lg font-semibold text-slate-400">Aguardando Conexão</span>
-                </div>
-            </div>
-
-            <!-- Tabela de Posições Em Tempo Real -->
-            <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700">
-                <h2 class="text-sm font-semibold text-slate-300 mb-3 flex items-center justify-between">
-                    <span>📊 Posições Abertas em Tempo Real</span>
-                    <span class="text-xs font-normal text-slate-500">Atualiza a cada 5s</span>
-                </h2>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-900/50 text-slate-400 border-b border-slate-700">
-                            <tr>
-                                <th class="p-2">PAR</th>
-                                <th class="p-2">LADO</th>
-                                <th class="p-2">QTD</th>
-                                <th class="p-2">ENTRADA</th>
-                                <th class="p-2">PNL (USDT)</th>
-                                <th class="p-2 text-right">AÇÃO</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabela-posicoes">
-                            <tr>
-                                <td colspan="6" class="p-4 text-center text-slate-500">Nenhuma posição aberta no momento.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Terminal Log -->
-            <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700">
-                <h2 class="text-sm font-semibold text-slate-300 mb-2">🖥️ Terminal de Operações em Tempo Real</h2>
-                <div id="terminal" class="bg-slate-950 p-3 rounded font-mono text-xs h-40 overflow-y-auto space-y-1 text-slate-400">
-                    <p>> Sistema Iniciado. Conecte a API para habilitar ordens..</p>
-                </div>
-            </div>
-
-        </div>
-    </main>
+    </div>
 
     <script>
-        const API_URL = "http://localhost:5000/api/v1";
+        // Substitua pela URL real do seu backend Flask hospedado (ex: https://seu-backend.onrender.com)
+        const BACKEND_URL = ""; 
 
-        function log(msg, color = "text-slate-400") {
-            const term = document.getElementById("terminal");
-            term.innerHTML += `<p class="${color}">> ${msg}</p>`;
-            term.scrollTop = term.scrollHeight;
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-indigo-600', 'text-white');
+                el.classList.add('text-gray-300', 'hover:bg-gray-700');
+            });
+
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.add('bg-indigo-600', 'text-white');
+            activeBtn.classList.remove('text-gray-300', 'hover:bg-gray-700');
+
+            const titles = {
+                'dashboard': 'Dashboard',
+                'trades': 'Trades & Bots',
+                'gas': 'Saldo de Gás',
+                'exchange': 'Conexão de Corretoras',
+                'settings': 'Configurações'
+            };
+            document.getElementById('page-title').innerText = titles[tabId];
         }
 
-        async function conectarAPI() {
-            const payload = {
-                exchange: document.getElementById('exchange').value,
-                apiKey: document.getElementById('apiKey').value,
-                apiSecret: document.getElementById('apiSecret').value
-            };
-
-            log("Validando chaves com a BYBIT...", "text-yellow-400");
+        async function fetchGasBalance() {
             try {
-                const res = await fetch(`${API_URL}/connect`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
+                const response = await fetch(`${BACKEND_URL}/api/gas/balance`);
+                const data = await response.json();
+                document.getElementById('gas-display-header').innerText = `Gás: $${data.gas_balance.toFixed(2)}`;
+                document.getElementById('gas-balance-card').innerText = `USDT $${data.gas_balance.toFixed(2)}`;
+            } catch (e) {
+                console.error("Erro ao buscar saldo de gás");
+            }
+        }
 
-                if (data.success) {
-                    document.getElementById('saldo-usdt').innerText = `$ ${data.balance.toFixed(2)}`;
-                    document.getElementById('badge-status').className = "px-3 py-1 bg-emerald-950 text-emerald-400 text-xs rounded-full border border-emerald-700";
-                    document.getElementById('badge-status').innerText = "API Conectada";
-                    document.getElementById('status-robo').innerText = "🟢 Prontos para Operar";
-                    document.getElementById('status-robo').className = "text-lg font-semibold text-emerald-400";
-                    log(`✅ Sucesso: Conexão ativa. Saldo: $ ${data.balance}`, "text-emerald-400");
-                    
-                    // Inicia atualização contínua de posições
-                    carregarPosicoes();
-                    setInterval(carregarPosicoes, 5000);
+        async function connectExchange() {
+            const exchange = document.getElementById('conn-exchange').value;
+            const apiKey = document.getElementById('conn-apikey').value;
+            const apiSecret = document.getElementById('conn-apisecret').value;
+            const msgEl = document.getElementById('conn-msg');
+
+            msgEl.innerText = "Conectando...";
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/connect`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ exchange, apiKey, apiSecret })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    msgEl.className = "mt-4 text-sm text-green-400";
+                    msgEl.innerText = data.message;
                 } else {
-                    log(`❌ Erro: ${data.error}`, "text-rose-500");
+                    msgEl.className = "mt-4 text-sm text-red-400";
+                    msgEl.innerText = data.error;
                 }
-            } catch (err) {
-                log(`❌ Erro na requisição: ${err.message}`, "text-rose-500");
+            } catch (e) {
+                msgEl.className = "mt-4 text-sm text-red-400";
+                msgEl.innerText = "Erro de conexão com o servidor.";
             }
         }
 
-        async function enviarOrdem(side) {
-            const payload = {
-                exchange: document.getElementById('exchange').value,
-                apiKey: document.getElementById('apiKey').value,
-                apiSecret: document.getElementById('apiSecret').value,
-                symbol: document.getElementById('symbol').value,
-                amount: document.getElementById('amount').value,
-                leverage: document.getElementById('leverage').value,
-                side: side
-            };
+        async function controlBot(action) {
+            const exchange = document.getElementById('bot-exchange').value;
+            const symbol = document.getElementById('bot-symbol').value;
+            const msgEl = document.getElementById('bot-status-msg');
 
-            log(`⚡ Enviando ordem de ${side.toUpperCase()}...`, "text-yellow-400");
             try {
-                const res = await fetch(`${API_URL}/order`, {
+                const response = await fetch(`${BACKEND_URL}/api/bot/control`, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action, exchange, symbol })
                 });
-                const data = await res.json();
+                const data = await response.json();
+                msgEl.innerText = data.message || data.error;
+            } catch (e) {
+                msgEl.innerText = "Erro ao controlar o bot.";
+            }
+        }
 
-                if (data.success) {
-                    log(`🎉 Ordem Executada! ID: ${data.orderId}`, "text-emerald-400");
-                    carregarPosicoes();
+        async function registerDeposit() {
+            const amount = parseFloat(document.getElementById('deposit-amount').value);
+            const txHash = document.getElementById('deposit-txhash').value;
+            const msgEl = document.getElementById('gas-msg');
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/gas/deposit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount, txHash })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    msgEl.className = "mt-4 text-sm text-green-400";
+                    msgEl.innerText = data.message;
+                    fetchGasBalance();
                 } else {
-                    log(`❌ Falha na Execução: ${data.error}`, "text-rose-500");
+                    msgEl.className = "mt-4 text-sm text-red-400";
+                    msgEl.innerText = data.error;
                 }
-            } catch (err) {
-                log(`❌ Erro de Conexão: ${err.message}`, "text-rose-500");
+            } catch (e) {
+                msgEl.innerText = "Erro ao registrar depósito.";
             }
         }
 
-        async function carregarPosicoes() {
-            const apiKey = document.getElementById('apiKey').value;
-            if (!apiKey) return;
-
-            const payload = {
-                exchange: document.getElementById('exchange').value,
-                apiKey: apiKey,
-                apiSecret: document.getElementById('apiSecret').value
-            };
-
-            try {
-                const res = await fetch(`${API_URL}/positions`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-
-                if (data.success) {
-                    const tbody = document.getElementById('tabela-posicoes');
-                    if (data.positions.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">Nenhuma posição aberta no momento.</td></tr>`;
-                        return;
-                    }
-
-                    tbody.innerHTML = data.positions.map(pos => {
-                        const sideColor = pos.side === 'LONG' ? 'text-emerald-400' : 'text-rose-400';
-                        const pnlColor = pos.unrealizedPnl >= 0 ? 'text-emerald-400' : 'text-rose-400';
-                        return `
-                            <tr class="border-b border-slate-800 hover:bg-slate-800/30">
-                                <td class="p-2 font-bold">${pos.symbol} <span class="text-slate-500 font-normal">(${pos.leverage}x)</span></td>
-                                <td class="p-2 ${sideColor} font-bold">${pos.side}</td>
-                                <td class="p-2">${pos.contracts}</td>
-                                <td class="p-2">$ ${pos.entryPrice.toFixed(2)}</td>
-                                <td class="p-2 ${pnlColor} font-bold">$ ${pos.unrealizedPnl.toFixed(2)}</td>
-                                <td class="p-2 text-right">
-                                    <button onclick="fecharPosicao('${pos.rawSymbol}', '${pos.side}', ${pos.contracts})" class="bg-rose-600/80 hover:bg-rose-600 text-white px-2 py-1 rounded text-xs">Zerar</button>
-                                </td>
-                            </tr>
-                        `;
-                    }).join('');
-                }
-            } catch (err) {
-                console.error("Erro ao carregar posições:", err);
-            }
-        }
-
-        async function fecharPosicao(rawSymbol, side, contracts) {
-            const payload = {
-                exchange: document.getElementById('exchange').value,
-                apiKey: document.getElementById('apiKey').value,
-                apiSecret: document.getElementById('apiSecret').value,
-                symbol: rawSymbol,
-                side: side,
-                contracts: contracts
-            };
-
-            log(`🛑 Fechando posição em ${rawSymbol}...`, "text-yellow-400");
-            try {
-                const res = await fetch(`${API_URL}/close-position`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-
-                if (data.success) {
-                    log(`✅ Posição Zerada com Sucesso! ID: ${data.orderId}`, "text-emerald-400");
-                    carregarPosicoes();
-                } else {
-                    log(`❌ Erro ao Zerar: ${data.error}`, "text-rose-500");
-                }
-            } catch (err) {
-                log(`❌ Erro ao fechar: ${err.message}`, "text-rose-500");
-            }
-        }
+        fetchGasBalance();
     </script>
 </body>
 </html>
