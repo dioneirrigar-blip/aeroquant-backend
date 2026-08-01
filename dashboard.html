@@ -6,132 +6,134 @@
     <title>AeroQuant - Painel de Controle</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-white font-sans">
+<body class="bg-gray-950 text-gray-100 font-sans selection:bg-indigo-500 selection:text-white">
 
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar / Menu Lateral -->
-        <div class="w-64 bg-gray-800 border-r border-gray-700 flex flex-col justify-between">
+        <div class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col justify-between shadow-xl">
             <div class="p-6">
-                <h1 class="text-2xl font-bold text-indigo-400">AeroQuant</h1>
-                <p class="text-xs text-gray-400 mt-1">Trading Automatizado</p>
+                <h1 class="text-2xl font-black tracking-wider text-indigo-400">AEROQUANT</h1>
+                <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest font-semibold">Trading & IA</p>
                 
                 <nav class="mt-8 space-y-2">
-                    <button onclick="switchTab('dashboard')" class="w-full text-left px-4 py-2.5 rounded-lg bg-indigo-600 text-white font-medium transition tab-btn" id="btn-dashboard">Dashboard</button>
-                    <button onclick="switchTab('trades')" class="w-full text-left px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 transition tab-btn" id="btn-trades">Trades & Bots</button>
-                    <button onclick="switchTab('gas')" class="w-full text-left px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 transition tab-btn" id="btn-gas">Saldo de Gás</button>
-                    <button onclick="switchTab('exchange')" class="w-full text-left px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 transition tab-btn" id="btn-exchange">Corretoras</button>
-                    <button onclick="switchTab('settings')" class="w-full text-left px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 transition tab-btn" id="btn-settings">Configurações</button>
+                    <button onclick="switchTab('dashboard')" class="w-full text-left px-4 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 text-white font-semibold shadow-lg shadow-indigo-900/30 transition tab-btn flex items-center space-x-3" id="btn-dashboard">
+                        <span>Dashboard</span>
+                    </button>
+                    <button onclick="switchTab('trades')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-gray-200 font-medium transition tab-btn" id="btn-trades">Trades & Bots</button>
+                    <button onclick="switchTab('gas')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-gray-200 font-medium transition tab-btn" id="btn-gas">Saldo de Gás</button>
+                    <button onclick="switchTab('exchange')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-gray-200 font-medium transition tab-btn" id="btn-exchange">Corretoras</button>
+                    <button onclick="switchTab('settings')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-gray-200 font-medium transition tab-btn" id="btn-settings">Configurações</button>
                 </nav>
             </div>
-            <div class="p-6 border-t border-gray-700">
-                <span class="text-xs text-green-400 flex items-center">● Sistema Online</span>
+            <div class="p-6 border-t border-gray-800 bg-gray-900/50">
+                <span class="text-xs text-emerald-400 flex items-center font-medium"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-2"></span> Sistema Online</span>
             </div>
         </div>
 
         <!-- Conteúdo Principal -->
-        <div class="flex-1 flex flex-col overflow-y-auto">
-            <header class="bg-gray-800 border-b border-gray-700 p-4 flex justify-between items-center shadow">
-                <h2 id="page-title" class="text-xl font-semibold">Dashboard</h2>
-                <div id="gas-display-header" class="bg-gray-700 px-3 py-1.5 rounded-lg text-sm">
+        <div class="flex-1 flex flex-col overflow-y-auto bg-gray-950">
+            <header class="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 px-8 py-5 flex justify-between items-center sticky top-0 z-10">
+                <h2 id="page-title" class="text-xl font-bold tracking-tight text-white">Dashboard</h2>
+                <div id="gas-display-header" class="bg-gray-800/90 border border-gray-700/60 px-4 py-2 rounded-xl text-sm font-semibold shadow-inner text-emerald-400">
                     Gás: Carregando...
                 </div>
             </header>
 
-            <main class="p-6">
+            <main class="p-8">
                 <!-- Aba Dashboard -->
                 <div id="tab-dashboard" class="tab-content space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-gray-800 p-5 rounded-xl border border-gray-700">
-                            <p class="text-sm text-gray-400">Saldo Total Estimado</p>
-                            <p class="text-2xl font-bold mt-2">$0.00</p>
+                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl hover:border-gray-700 transition">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Saldo Total Estimado</p>
+                            <p class="text-3xl font-black mt-3 text-white">$0.00</p>
                         </div>
-                        <div class="bg-gray-800 p-5 rounded-xl border border-gray-700">
-                            <p class="text-sm text-gray-400">Bots Ativos</p>
-                            <p class="text-2xl font-bold mt-2 text-indigo-400">0</p>
+                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl hover:border-gray-700 transition">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Bots Ativos</p>
+                            <p class="text-3xl font-black mt-3 text-indigo-400">0</p>
                         </div>
-                        <div class="bg-gray-800 p-5 rounded-xl border border-gray-700">
-                            <p class="text-sm text-gray-400">Saldo de Gás Disponível</p>
-                            <p id="gas-balance-card" class="text-2xl font-bold mt-2 text-green-400">USDT --</p>
+                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl hover:border-gray-700 transition">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Saldo de Gás Disponível</p>
+                            <p id="gas-balance-card" class="text-3xl font-black mt-3 text-emerald-400">USDT --</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Aba Trades & Bots -->
                 <div id="tab-trades" class="tab-content hidden space-y-6">
-                    <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-                        <h3 class="text-lg font-semibold mb-4">Controle do Robô de Trading</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl">
+                        <h3 class="text-lg font-bold mb-6 text-white flex items-center">Controle do Robô de Trading</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                             <div>
-                                <label class="block text-sm text-gray-400 mb-1">Corretora</label>
-                                <select id="bot-exchange" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Corretora</label>
+                                <select id="bot-exchange" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-indigo-500 transition">
                                     <option value="bybit">Bybit</option>
                                     <option value="binance">Binance</option>
                                     <option value="okx">OKX</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm text-gray-400 mb-1">Par de Moedas</label>
-                                <input type="text" id="bot-symbol" value="BTC/USDT" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Par de Moedas</label>
+                                <input type="text" id="bot-symbol" value="BTC/USDT" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-indigo-500 transition">
                             </div>
                         </div>
                         <div class="flex space-x-4">
-                            <button onclick="controlBot('start')" class="bg-green-600 hover:bg-green-500 px-6 py-2.5 rounded-lg font-medium transition">Iniciar Bot</button>
-                            <button onclick="controlBot('stop')" class="bg-red-600 hover:bg-red-500 px-6 py-2.5 rounded-lg font-medium transition">Parar Bot</button>
+                            <button onclick="controlBot('start')" class="bg-emerald-600 hover:bg-emerald-500 px-6 py-3 rounded-xl font-bold text-white shadow-lg shadow-emerald-900/30 transition">Iniciar Bot</button>
+                            <button onclick="controlBot('stop')" class="bg-rose-600 hover:bg-rose-500 px-6 py-3 rounded-xl font-bold text-white shadow-lg shadow-rose-900/30 transition">Parar Bot</button>
                         </div>
-                        <p id="bot-status-msg" class="mt-4 text-sm text-gray-400"></p>
+                        <p id="bot-status-msg" class="mt-4 text-sm font-medium text-gray-400"></p>
                     </div>
                 </div>
 
                 <!-- Aba Saldo de Gás -->
                 <div id="tab-gas" class="tab-content hidden space-y-6">
-                    <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 max-w-xl">
-                        <h3 class="text-lg font-semibold mb-4">Adicionar Saldo de Gás (USDT - BEP20)</h3>
-                        <div class="space-y-4">
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl max-w-xl">
+                        <h3 class="text-lg font-bold mb-6 text-white">Adicionar Saldo de Gás (USDT - BEP20)</h3>
+                        <div class="space-y-5">
                             <div>
-                                <label class="block text-sm text-gray-400 mb-1">Valor em USDT</label>
-                                <input type="number" id="deposit-amount" placeholder="50.00" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Valor em USDT</label>
+                                <input type="number" id="deposit-amount" placeholder="50.00" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-indigo-500 transition">
                             </div>
                             <div>
-                                <label class="block text-sm text-gray-400 mb-1">Hash da Transação (TxHash)</label>
-                                <input type="text" id="deposit-txhash" placeholder="0x..." class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Hash da Transação (TxHash)</label>
+                                <input type="text" id="deposit-txhash" placeholder="0x..." class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-indigo-500 transition">
                             </div>
-                            <button onclick="registerDeposit()" class="w-full bg-indigo-600 hover:bg-indigo-500 py-2.5 rounded-lg font-medium transition">Registrar Depósito</button>
+                            <button onclick="registerDeposit()" class="w-full bg-indigo-600 hover:bg-indigo-500 py-3 rounded-xl font-bold text-white shadow-lg shadow-indigo-900/30 transition">Registrar Depósito</button>
                         </div>
-                        <p id="gas-msg" class="mt-4 text-sm text-gray-400"></p>
+                        <p id="gas-msg" class="mt-4 text-sm font-medium text-gray-400"></p>
                     </div>
                 </div>
 
                 <!-- Aba Corretoras -->
                 <div id="tab-exchange" class="tab-content hidden space-y-6">
-                    <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 max-w-xl">
-                        <h3 class="text-lg font-semibold mb-4">Conectar API da Corretora</h3>
-                        <div class="space-y-4">
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl max-w-xl">
+                        <h3 class="text-lg font-bold mb-6 text-white">Conectar API da Corretora</h3>
+                        <div class="space-y-5">
                             <div>
-                                <label class="block text-sm text-gray-400 mb-1">Corretora</label>
-                                <select id="conn-exchange" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Corretora</label>
+                                <select id="conn-exchange" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-indigo-500 transition">
                                     <option value="bybit">Bybit</option>
                                     <option value="binance">Binance</option>
                                     <option value="okx">OKX</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm text-gray-400 mb-1">API Key</label>
-                                <input type="text" id="conn-apikey" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">API Key</label>
+                                <input type="text" id="conn-apikey" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-indigo-500 transition">
                             </div>
                             <div>
-                                <label class="block text-sm text-gray-400 mb-1">API Secret</label>
-                                <input type="password" id="conn-apisecret" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white">
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">API Secret</label>
+                                <input type="password" id="conn-apisecret" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-indigo-500 transition">
                             </div>
-                            <button onclick="connectExchange()" class="w-full bg-indigo-600 hover:bg-indigo-500 py-2.5 rounded-lg font-medium transition">Conectar e Validar</button>
+                            <button onclick="connectExchange()" class="w-full bg-indigo-600 hover:bg-indigo-500 py-3 rounded-xl font-bold text-white shadow-lg shadow-indigo-900/30 transition">Conectar e Validar</button>
                         </div>
-                        <p id="conn-msg" class="mt-4 text-sm text-gray-400"></p>
+                        <p id="conn-msg" class="mt-4 text-sm font-medium text-gray-400"></p>
                     </div>
                 </div>
 
                 <!-- Aba Configurações -->
                 <div id="tab-settings" class="tab-content hidden space-y-6">
-                    <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-                        <h3 class="text-lg font-semibold mb-2">Configurações Gerais</h3>
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl">
+                        <h3 class="text-lg font-bold mb-2 text-white">Configurações Gerais</h3>
                         <p class="text-sm text-gray-400">Ajuste parâmetros globais de risco e notificações do sistema.</p>
                     </div>
                 </div>
@@ -140,20 +142,19 @@
     </div>
 
     <script>
-        // Substitua pela URL real do seu backend Flask hospedado (ex: https://seu-backend.onrender.com)
-        const BACKEND_URL = ""; 
+        const API_URL = "https://seu-backend.onrender.com"; 
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(el => {
-                el.classList.remove('bg-indigo-600', 'text-white');
-                el.classList.add('text-gray-300', 'hover:bg-gray-700');
+                el.classList.remove('bg-gradient-to-r', 'from-indigo-600', 'to-indigo-700', 'text-white', 'shadow-lg', 'shadow-indigo-900/30', 'font-semibold');
+                el.classList.add('text-gray-400', 'hover:bg-gray-800/80', 'hover:text-gray-200', 'font-medium');
             });
 
             document.getElementById('tab-' + tabId).classList.remove('hidden');
             const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.classList.add('bg-indigo-600', 'text-white');
-            activeBtn.classList.remove('text-gray-300', 'hover:bg-gray-700');
+            activeBtn.classList.add('bg-gradient-to-r', 'from-indigo-600', 'to-indigo-700', 'text-white', 'shadow-lg', 'shadow-indigo-900/30', 'font-semibold');
+            activeBtn.classList.remove('text-gray-400', 'hover:bg-gray-800/80', 'hover:text-gray-200', 'font-medium');
 
             const titles = {
                 'dashboard': 'Dashboard',
@@ -167,7 +168,7 @@
 
         async function fetchGasBalance() {
             try {
-                const response = await fetch(`${BACKEND_URL}/api/gas/balance`);
+                const response = await fetch(`${API_URL}/api/gas/balance`);
                 const data = await response.json();
                 document.getElementById('gas-display-header').innerText = `Gás: $${data.gas_balance.toFixed(2)}`;
                 document.getElementById('gas-balance-card').innerText = `USDT $${data.gas_balance.toFixed(2)}`;
@@ -184,21 +185,21 @@
 
             msgEl.innerText = "Conectando...";
             try {
-                const response = await fetch(`${BACKEND_URL}/api/connect`, {
+                const response = await fetch(`${API_URL}/api/connect`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ exchange, apiKey, apiSecret })
                 });
                 const data = await response.json();
                 if (response.ok) {
-                    msgEl.className = "mt-4 text-sm text-green-400";
+                    msgEl.className = "mt-4 text-sm text-emerald-400 font-semibold";
                     msgEl.innerText = data.message;
                 } else {
-                    msgEl.className = "mt-4 text-sm text-red-400";
+                    msgEl.className = "mt-4 text-sm text-rose-400 font-semibold";
                     msgEl.innerText = data.error;
                 }
             } catch (e) {
-                msgEl.className = "mt-4 text-sm text-red-400";
+                msgEl.className = "mt-4 text-sm text-rose-400 font-semibold";
                 msgEl.innerText = "Erro de conexão com o servidor.";
             }
         }
@@ -209,7 +210,7 @@
             const msgEl = document.getElementById('bot-status-msg');
 
             try {
-                const response = await fetch(`${BACKEND_URL}/api/bot/control`, {
+                const response = await fetch(`${API_URL}/api/bot/control`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action, exchange, symbol })
@@ -227,18 +228,18 @@
             const msgEl = document.getElementById('gas-msg');
 
             try {
-                const response = await fetch(`${BACKEND_URL}/api/gas/deposit`, {
+                const response = await fetch(`${API_URL}/api/gas/deposit`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ amount, txHash })
                 });
                 const data = await response.json();
                 if (response.ok) {
-                    msgEl.className = "mt-4 text-sm text-green-400";
+                    msgEl.className = "mt-4 text-sm text-emerald-400 font-semibold";
                     msgEl.innerText = data.message;
                     fetchGasBalance();
                 } else {
-                    msgEl.className = "mt-4 text-sm text-red-400";
+                    msgEl.className = "mt-4 text-sm text-rose-400 font-semibold";
                     msgEl.innerText = data.error;
                 }
             } catch (e) {
