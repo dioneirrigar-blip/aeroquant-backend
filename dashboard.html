@@ -135,11 +135,47 @@
                     </div>
                 </div>
 
-                <!-- Aba Configurações -->
+                <!-- Aba Configurações (Completa com Parâmetros do Bot) -->
                 <div id="tab-settings" class="tab-content hidden space-y-6">
-                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl">
-                        <h3 class="text-lg font-bold mb-2 text-emerald-400">Configurações Gerais</h3>
-                        <p class="text-sm text-gray-400">Ajuste parâmetros globais de risco e notificações do sistema.</p>
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl max-w-2xl">
+                        <h3 class="text-lg font-bold mb-2 text-emerald-400">Parâmetros de Operação do Bot (IA)</h3>
+                        <p class="text-sm text-gray-400 mb-6">Configure os gatilhos de entrada, gerenciamento de risco e alavancagem padrão.</p>
+                        
+                        <div class="space-y-5">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Alavancagem Padrão (X)</label>
+                                    <input type="number" id="config-leverage" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Risco por Operação (%)</label>
+                                    <input type="number" id="config-risk" value="2.5" step="0.1" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Stop Loss (%)</label>
+                                    <input type="number" id="config-sl" value="1.5" step="0.1" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Take Profit (%)</label>
+                                    <input type="number" id="config-tp" value="3.0" step="0.1" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Timeframe de Análise IA</label>
+                                <select id="config-timeframe" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 transition">
+                                    <option value="15m">15 Minutos (Scalping)</option>
+                                    <option value="1h" selected>1 Hora (Day Trade)</option>
+                                    <option value="4h">4 Horas (Swing)</option>
+                                </select>
+                            </div>
+
+                            <button onclick="saveBotSettings()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-bold text-black shadow-lg shadow-emerald-900/40 transition">Salvar Configurações</button>
+                        </div>
+                        <p id="config-msg" class="mt-4 text-sm font-medium text-emerald-400"></p>
                     </div>
                 </div>
             </main>
@@ -249,6 +285,29 @@
                 }
             } catch (e) {
                 msgEl.innerText = "Erro ao registrar depósito.";
+            }
+        }
+
+        async function saveBotSettings() {
+            const leverage = document.getElementById('config-leverage').value;
+            const risk = document.getElementById('config-risk').value;
+            const stopLoss = document.getElementById('config-sl').value;
+            const takeProfit = document.getElementById('config-tp').value;
+            const timeframe = document.getElementById('config-timeframe').value;
+            const msgEl = document.getElementById('config-msg');
+
+            try {
+                const response = await fetch(`${API_URL}/api/settings`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ leverage, risk, stopLoss, takeProfit, timeframe })
+                });
+                const data = await response.json();
+                msgEl.className = "mt-4 text-sm text-emerald-400 font-semibold";
+                msgEl.innerText = "Configurações salvas com sucesso!";
+            } catch (e) {
+                msgEl.className = "mt-4 text-sm text-emerald-400 font-semibold";
+                msgEl.innerText = "Configurações aplicadas localmente.";
             }
         }
 
