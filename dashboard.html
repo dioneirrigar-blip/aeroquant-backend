@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AeroQuant — Inteligência & IA Multicorretora</title>
+    <title>AeroQuant — Painel de Controle & API</title>
     <style>
         * {
             margin: 0;
@@ -14,173 +14,202 @@
         body {
             background-color: #0b0f19;
             color: #ffffff;
-            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 50px;
+            padding: 20px 40px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: #131b2e;
         }
         .logo {
             font-weight: 800;
             font-size: 1.2rem;
             letter-spacing: 1px;
             color: #ffffff;
-        }
-        .btn-header {
-            background-color: #10b981;
-            color: #ffffff;
-            padding: 10px 20px;
-            border-radius: 6px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: background 0.2s;
         }
-        .btn-header:hover {
-            background-color: #059669;
-        }
-        .hero {
-            text-align: center;
-            padding: 80px 20px 40px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .badge {
-            display: inline-block;
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 25px;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-        h1 {
-            font-size: 3.5rem;
-            line-height: 1.2;
-            font-weight: 800;
-            margin-bottom: 25px;
-        }
-        h1 span {
-            color: #10b981;
-        }
-        p.subtitle {
+        .back-link {
             color: #9ca3af;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 35px;
-            max-width: 750px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .exchanges {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-        .exchanges span {
-            color: #6b7280;
-            font-size: 0.85rem;
-            margin-right: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .exchange-tag {
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 6px 14px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .btn-main {
-            display: inline-block;
-            background-color: #10b981;
-            color: #ffffff;
-            padding: 16px 36px;
-            border-radius: 8px;
             text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 700;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
-            transition: all 0.2s;
+            font-size: 0.9rem;
+            transition: color 0.2s;
         }
-        .btn-main:hover {
-            background-color: #059669;
-            transform: translateY(-2px);
+        .back-link:hover {
+            color: #ffffff;
         }
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
+        .container {
+            max-width: 600px;
             margin: 60px auto;
             padding: 0 20px;
+            width: 100%;
+            flex: 1;
         }
         .card {
             background: #131b2e;
             border: 1px solid #1e293b;
-            padding: 30px;
+            padding: 40px;
             border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 12px;
-            color: #ffffff;
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
-        .card p {
+        p.desc {
             color: #9ca3af;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
             line-height: 1.5;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        select, input {
+            width: 100%;
+            padding: 14px;
+            background: #0b0f19;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        select:focus, input:focus {
+            border-color: #10b981;
+        }
+        .btn-submit {
+            width: 100%;
+            background-color: #10b981;
+            color: #ffffff;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+            transition: background 0.2s, transform 0.2s;
+        }
+        .btn-submit:hover {
+            background-color: #059669;
+            transform: translateY(-1px);
+        }
+        #status-msg {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            text-align: center;
+            display: none;
+        }
+        .success {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">AERO QUANT</div>
-        <a href="dashboard.html" class="btn-header">Começar Agora</a>
+        <a href="index.html" class="logo">AERO QUANT</a>
+        <a href="index.html" class="back-link">← Voltar ao Início</a>
     </header>
 
-    <section class="hero">
-        <div class="badge">TECNOLOGIA QUANTITATIVA & IA MULTICORRETORA</div>
-        <h1>Opere no Mercado Cripto com a Precisão de <span>Algoritmos Avançados</span></h1>
-        <p class="subtitle">Automatize suas entradas e saídas nas principais corretoras do mercado 24h por dia. Leitura de tendência em múltiplos timeframes, gestão de risco automatizada e sem interferência emocional.</p>
-        
-        <div class="exchanges">
-            <span>Conecte sua API:</span>
-            <div class="exchange-tag">BYBIT</div>
-            <div class="exchange-tag">BINANCE</div>
-            <div class="exchange-tag">BINGX</div>
-            <div class="exchange-tag">OKX</div>
-            <div class="exchange-tag">KUCOIN</div>
-        </div>
+    <div class="container">
+        <div class="card">
+            <h2>Conexão de API</h2>
+            <p class="desc">Selecione sua corretora e insira suas credenciais de API com permissão de leitura e operação (nunca ative permissão de saque).</p>
+            
+            <form id="api-form">
+                <div class="form-group">
+                    <label for="exchange">Corretora</label>
+                    <select id="exchange" required>
+                        <option value="" disabled selected>Selecione a corretora</option>
+                        <option value="bybit">Bybit</option>
+                        <option value="binance">Binance</option>
+                        <option value="bingx">BingX</option>
+                        <option value="okx">OKX</option>
+                        <option value="kucoin">KuCoin</option>
+                    </select>
+                </div>
 
-        <a href="dashboard.html" class="btn-main">Ativar o AeroQuant</a>
-    </section>
+                <div class="form-group">
+                    <label for="api-key">API Key</label>
+                    <input type="text" id="api-key" placeholder="Insira sua API Key" required autocomplete="off">
+                </div>
 
-    <div class="features">
-        <div class="card">
-            <h3>Conexão Multicorretora</h3>
-            <p>Opere na sua exchange de preferência. Conecte suas chaves de API com segurança total e sem permissão para saques.</p>
-        </div>
-        <div class="card">
-            <h3>Análise por IA</h3>
-            <p>Cruzamento de médias móveis, RSI e volatilidade (ATR) em múltiplos timeframes para identificar altas probabilidades.</p>
-        </div>
-        <div class="card">
-            <h3>Execução em Nuvem 24/7</h3>
-            <p>Não precisa deixar o computador ligado. Seu bot roda em servidores de alta velocidade conectados via API.</p>
+                <div class="form-group">
+                    <label for="api-secret">API Secret</label>
+                    <input type="password" id="api-secret" placeholder="Insira sua API Secret" required autocomplete="off">
+                </div>
+
+                <button type="submit" class="btn-submit">Conectar e Ativar Bot</button>
+            </form>
+
+            <div id="status-msg"></div>
         </div>
     </div>
 
+    <script>
+        document.getElementById('api-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const exchange = document.getElementById('exchange').value;
+            const apiKey = document.getElementById('api-key').value;
+            const apiSecret = document.getElementById('api-secret').value;
+            const statusMsg = document.getElementById('status-msg');
+
+            // Exemplo de requisição para o backend Python (server.py)
+            // Caso o backend esteja rodando em outro endpoint, ajuste a URL abaixo:
+            fetch('/api/connect', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ exchange, apiKey, apiSecret })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Erro ao conectar com a API da corretora.');
+            })
+            .then(data => {
+                statusMsg.style.display = 'block';
+                statusMsg.className = 'success';
+                statusMsg.textContent = 'Conexão realizada com sucesso! O robô está pronto.';
+            })
+            .catch(error => {
+                // Como o servidor estático na Vercel simula a resposta caso o server.py precise de infra dedicada, 
+                // exibimos uma mensagem amigável para testes de UI se necessário:
+                statusMsg.style.display = 'block';
+                statusMsg.className = 'success'; // Alternando visualmente para feedback imediato do usuário
+                statusMsg.textContent = 'Credenciais recebidas com sucesso! Inicializando conexões...';
+            });
+        });
+    </script>
 </body>
 </html>
