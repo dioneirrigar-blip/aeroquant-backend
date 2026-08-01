@@ -1,12 +1,3 @@
 {
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/templates/index.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/templates/$1"
-    }
-  ]
+  "outputDirectory": "templates"
 }
