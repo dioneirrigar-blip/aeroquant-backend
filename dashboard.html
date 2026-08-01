@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AeroQuant - Painel de Controle</title>
+    <title>Aeroquant - Painel de Controle</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .neon-glow {
@@ -16,18 +16,16 @@
     <div class="flex h-screen overflow-hidden">
         <div class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col justify-between shadow-xl">
             <div class="p-6">
-                <h1 class="text-2xl font-black tracking-wider text-emerald-400 neon-glow">WITS</h1>
+                <h1 class="text-2xl font-black tracking-wider text-emerald-400 neon-glow">Aeroquant</h1>
                 <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest font-semibold">AI Quant Trading System</p>
                 
                 <nav class="mt-8 space-y-2">
-                    <button onclick="switchMainTab('dashboard')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition main-tab-btn" id="btn-main-dashboard">Dashboard</button>
-                    <button onclick="switchMainTab('bots')" class="w-full text-left px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-semibold shadow-lg shadow-emerald-900/30 transition main-tab-btn flex items-center space-x-3" id="btn-main-bots">
-                        <span>Bots</span>
-                    </button>
-                    <button onclick="switchMainTab('gas')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition main-tab-btn">Saldo de Gás</button>
-                    <button onclick="switchMainTab('licenca')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition main-tab-btn">Licença</button>
-                    <button onclick="switchMainTab('referencias')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition main-tab-btn">Referências</button>
-                    <button onclick="switchMainTab('configuracoes')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition main-tab-btn">Configurações</button>
+                    <button onclick="switchSection('dashboard')" class="w-full text-left px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-semibold shadow-lg shadow-emerald-900/30 transition nav-btn flex items-center space-x-3" id="nav-dashboard"><span>Dashboard</span></button>
+                    <button onclick="switchSection('bots')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition nav-btn" id="nav-bots">Bots</button>
+                    <button onclick="switchSection('gas')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition nav-btn" id="nav-gas">Saldo de Gás</button>
+                    <button onclick="switchSection('licenca')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition nav-btn" id="nav-licenca">Licença</button>
+                    <button onclick="switchSection('referencias')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition nav-btn" id="nav-referencias">Referências</button>
+                    <button onclick="switchSection('configuracoes')" class="w-full text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800/80 hover:text-emerald-400 font-medium transition nav-btn" id="nav-configuracoes">Configurações</button>
                 </nav>
             </div>
             <div class="p-6 border-t border-gray-800 bg-gray-900/50">
@@ -37,293 +35,223 @@
 
         <div class="flex-1 flex flex-col overflow-y-auto bg-gray-950">
             <header class="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 px-8 py-5 flex justify-between items-center sticky top-0 z-10">
-                <h2 id="page-title" class="text-xl font-bold tracking-tight text-emerald-400">Bots de Trading</h2>
+                <h2 id="page-title" class="text-xl font-bold tracking-tight text-emerald-400">Dashboard Aeroquant</h2>
                 <div id="gas-display-header" class="bg-gray-800/90 border border-emerald-500/30 px-4 py-2 rounded-xl text-sm font-semibold shadow-inner text-emerald-400">
-                    Gás: Carregando...
+                    Gás: $40.00 USDT
                 </div>
             </header>
 
             <main class="p-8">
-                <div id="section-dashboard" class="main-section hidden space-y-6">
-                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl">
-                        <h3 class="text-xl font-bold text-emerald-400 mb-2">Visão Geral do Sistema</h3>
-                        <p class="text-gray-400 text-sm">Resumo geral das suas operações na plataforma.</p>
+                <div id="sec-dashboard" class="app-section space-y-6">
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Bem-vindo ao Aeroquant, Trader!</h3>
+                            <p class="text-xs text-gray-400 mt-1">Monitore seu status, licenças, saldo de gás e o histórico geral das suas operações.</p>
+                        </div>
+                        <span class="bg-emerald-950 text-emerald-400 border border-emerald-500/30 px-4 py-2 rounded-xl font-bold text-xs">Conta Verificada</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Status da Licença</p>
+                            <div class="flex items-center space-x-2 mt-3">
+                                <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <p class="text-2xl font-black text-emerald-400 neon-glow">Ativa</p>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">Expira em: 31/12/2026</p>
+                        </div>
+
+                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Saldo de Gás Disponível</p>
+                            <p class="text-3xl font-black mt-3 text-emerald-400 neon-glow">$40.00 <span class="text-sm font-semibold text-gray-400">USDT</span></p>
+                            <p class="text-xs text-emerald-500 mt-2">Suficiente para operar</p>
+                        </div>
+
+                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Bots Ativos</p>
+                            <p class="text-3xl font-black mt-3 text-emerald-400 neon-glow">1 / 5</p>
+                            <p class="text-xs text-gray-500 mt-2">Moeda: BTC/USDT (Ativo)</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-4">
+                        <h4 class="text-sm font-bold text-emerald-400 uppercase tracking-wider">Histórico de Aquisições & Recargas</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm text-gray-300">
+                                <thead class="bg-gray-950 text-gray-400 uppercase text-xs">
+                                    <tr>
+                                        <th class="p-3">Tipo</th>
+                                        <th class="p-3">Detalhes / Plano</th>
+                                        <th class="p-3">Valor</th>
+                                        <th class="p-3">Rede / Status</th>
+                                        <th class="p-3">TX Hash</th>
+                                        <th class="p-3">Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-800 text-xs">
+                                    <tr>
+                                        <td class="p-3 font-bold text-emerald-400">Recarga de Gás</td>
+                                        <td class="p-3">5.000 Gás</td>
+                                        <td class="p-3 font-bold">$40.00 USDT</td>
+                                        <td class="p-3"><span class="bg-emerald-950 text-emerald-400 px-2 py-1 rounded border border-emerald-500/30">Confirmado (BEP20)</span></td>
+                                        <td class="p-3 font-mono text-gray-500">0x8f9c...31ae</td>
+                                        <td class="p-3 text-gray-400">31/07/2026 23:30</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-teal-400">Ativação de Licença</td>
+                                        <td class="p-3">Licença Anual Aeroquant</td>
+                                        <td class="p-3 font-bold">$150.00 USDT</td>
+                                        <td class="p-3"><span class="bg-emerald-950 text-emerald-400 px-2 py-1 rounded border border-emerald-500/30">Ativa</span></td>
+                                        <td class="p-3 font-mono text-gray-500">0x4a12...77bc</td>
+                                        <td class="p-3 text-gray-400">01/01/2026 10:00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                <div id="section-bots" class="main-section space-y-6">
+                <div id="sec-bots" class="app-section hidden space-y-6">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl gap-4">
                         <div>
-                            <h3 class="text-xl font-black text-emerald-400">Bots de Trading</h3>
+                            <h3 class="text-xl font-black text-emerald-400">Bots de Trading Aeroquant</h3>
                             <p class="text-sm text-gray-400 mt-1">Cada bot opera uma moeda com a sua própria configuração</p>
                         </div>
-                        <div class="flex items-center space-x-4">
-                            <span class="bg-emerald-950 text-emerald-400 border border-emerald-500/30 px-4 py-2 rounded-xl font-bold text-sm flex items-center">
-                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-2"></span> Ligado
-                            </span>
-                            <button onclick="openNewBotModal()" class="bg-emerald-600 hover:bg-emerald-500 text-black px-5 py-2.5 rounded-xl font-bold transition shadow-lg shadow-emerald-900/30">+ Novo bot</button>
-                        </div>
+                        <span class="bg-emerald-950 text-emerald-400 border border-emerald-500/30 px-4 py-2 rounded-xl font-bold text-sm flex items-center">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-2"></span> Ligado
+                        </span>
                     </div>
 
                     <div class="flex space-x-2 border-b border-gray-800 pb-4">
-                        <button onclick="switchBotTab('visao-geral')" class="px-5 py-2.5 rounded-xl bg-emerald-600 text-black font-bold transition bot-tab-btn" id="btn-visao-geral">Visão Geral</button>
-                        <button onclick="switchBotTab('operacoes')" class="px-5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-emerald-400 font-semibold transition bot-tab-btn" id="btn-operacoes">Operações</button>
-                        <button onclick="switchBotTab('configuracoes')" class="px-5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-emerald-400 font-semibold transition bot-tab-btn" id="btn-configuracoes">Configurações</button>
+                        <button onclick="switchBotTab('visao')" class="px-5 py-2.5 rounded-xl bg-emerald-600 text-black font-bold transition bot-tab-btn" id="btn-bot-visao">Visão Geral</button>
+                        <button onclick="switchBotTab('operacoes')" class="px-5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-emerald-400 font-semibold transition bot-tab-btn" id="btn-bot-operacoes">Operações</button>
+                        <button onclick="switchBotTab('config')" class="px-5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-emerald-400 font-semibold transition bot-tab-btn" id="btn-bot-config">Configurações</button>
                     </div>
 
-                    <div id="bot-tab-visao-geral" class="bot-tab-content space-y-6">
+                    <div id="bot-tab-visao" class="bot-content space-y-6">
                         <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-4">
                             <div class="flex justify-between items-center">
-                                <div class="flex items-center space-x-3">
-                                    <span class="font-black text-lg text-white">BTC/USDT</span>
-                                    <span class="bg-gray-800 text-emerald-400 text-xs px-2.5 py-1 rounded-lg font-bold border border-emerald-500/20">Alav: 10x</span>
-                                    <span class="bg-gray-800 text-emerald-400 text-xs px-2.5 py-1 rounded-lg font-bold border border-emerald-500/20">Modo: Real</span>
-                                </div>
-                                <span class="text-xs text-gray-400 font-medium">Próxima análise em <strong class="text-emerald-400">28s</strong></span>
+                                <span class="font-black text-lg text-white">BTC/USDT</span>
+                                <span class="bg-gray-800 text-emerald-400 text-xs px-3 py-1 rounded-lg font-bold border border-emerald-500/20">Alav: 10x | Real</span>
                             </div>
-                            <div class="text-xs text-gray-300 space-y-1 bg-gray-950 p-4 rounded-xl border border-gray-800">
-                                <p><strong class="text-emerald-400">Condição de mercado:</strong> Consolidação (Lateral). Mercado lateral e comprimido (ADX 20). Sem tendência e o robô espera um rompimento com força antes de entrar.</p>
-                                <p><strong class="text-emerald-400">Alinhamento dos 5 tempos (15minutos, 1hora, 4horas, 1cronograma) + nossos precise price/futures:</strong> Tendência (EMA 200). Volatilidade 0.00%</p>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
-                                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Patrimônio total</p>
-                                <p class="text-2xl font-black mt-2 text-white">19,89 USDT</p>
-                            </div>
-                            <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
-                                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Disponível</p>
-                                <p class="text-2xl font-black mt-2 text-white">19,99 USDT</p>
-                            </div>
-                            <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
-                                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">P&L, não realizado</p>
-                                <p class="text-2xl font-black mt-2 text-rose-500">-0,19 USDT</p>
-                            </div>
-                        </div>
-
-                        <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-4">
-                            <h4 class="text-sm font-bold text-emerald-400">Lucro / Perda</h4>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800">
-                                    <p class="text-xs text-gray-400">Hoje</p>
-                                    <p class="text-lg font-bold text-emerald-400">+0,00 USDT</p>
-                                </div>
-                                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800">
-                                    <p class="text-xs text-gray-400">Semana</p>
-                                    <p class="text-lg font-bold text-rose-500">-0,15 USDT</p>
-                                </div>
-                                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800">
-                                    <p class="text-xs text-gray-400">Mês</p>
-                                    <p class="text-lg font-bold text-rose-500">-0,15 USDT</p>
-                                </div>
-                                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800">
-                                    <p class="text-xs text-gray-400">Ano</p>
-                                    <p class="text-lg font-bold text-rose-500">-0,15 USDT</p>
-                                </div>
-                            </div>
+                            <p class="text-xs text-gray-300 bg-gray-950 p-4 rounded-xl border border-gray-800">
+                                <strong class="text-emerald-400">Mercado:</strong> Consolidado (ADX 20). Aguardando rompimento com volume institucional.
+                            </p>
                         </div>
                     </div>
 
-                    <div id="bot-tab-operacoes" class="bot-tab-content hidden space-y-6">
+                    <div id="bot-tab-operacoes" class="bot-content hidden space-y-6">
                         <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
-                            <h4 class="text-md font-bold text-emerald-400 mb-4">Histórico de Operações</h4>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left text-sm text-gray-300">
-                                    <thead class="bg-gray-950 text-gray-400 uppercase text-xs">
-                                        <tr>
-                                            <th class="p-3">Par</th>
-                                            <th class="p-3">Lado</th>
-                                            <th class="p-3">Entrada</th>
-                                            <th class="p-3">Saída</th>
-                                            <th class="p-3">P&L</th>
-                                            <th class="p-3">Qtd</th>
-                                            <th class="p-3">Exchange</th>
-                                            <th class="p-3">Alav.</th>
-                                            <th class="p-3">Data</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-800">
-                                        <tr>
-                                            <td class="p-3 font-bold">BTC/USDT</td>
-                                            <td class="p-3 text-emerald-400 font-bold">LONG</td>
-                                            <td class="p-3">$63275.00</td>
-                                            <td class="p-3">$0</td>
-                                            <td class="p-3 text-emerald-400">+$0</td>
-                                            <td class="p-3">2</td>
-                                            <td class="p-3">Bitget</td>
-                                            <td class="p-3">10x</td>
-                                            <td class="p-3 text-gray-500">31/07/2026</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="p-3 font-bold">BTC/USDT</td>
-                                            <td class="p-3 text-rose-500 font-bold">SHORT</td>
-                                            <td class="p-3">$64362.20</td>
-                                            <td class="p-3">$0</td>
-                                            <td class="p-3 text-emerald-400">+$0</td>
-                                            <td class="p-3">2</td>
-                                            <td class="p-3">Bitget</td>
-                                            <td class="p-3">6x</td>
-                                            <td class="p-3 text-gray-500">31/07/2026</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <h4 class="text-md font-bold text-emerald-400 mb-4">Histórico de Ordens</h4>
+                            <p class="text-xs text-gray-400">Nenhuma ordem recente registrada na sessão atual.</p>
                         </div>
                     </div>
 
-                    <div id="bot-tab-configuracoes" class="bot-tab-content hidden space-y-6">
+                    <div id="bot-tab-config" class="bot-content hidden space-y-6">
                         <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl space-y-6">
-                            <div>
-                                <h4 class="text-lg font-bold text-emerald-400">Configuração padrão dos bots</h4>
-                                <p class="text-xs text-gray-400 mt-1">Estes valores são usados como ponto de partida ao criar um novo bot. Cada bot tem a sua própria configuração e a moeda é escolhida na criação.</p>
-                            </div>
-
+                            <h4 class="text-lg font-bold text-emerald-400">Configuração padrão dos bots</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Exchange (da conta)</label>
-                                    <select class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500">
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Exchange</label>
+                                    <select class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white">
                                         <option>Bitget</option>
                                         <option>Binance</option>
                                         <option>Bybit</option>
                                     </select>
-                                    <p class="text-xs text-gray-500 mt-1">A corretora vale para toda a conta (onde suas chaves de API estão conectadas).</p>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Alavancagem máxima padrão</label>
-                                    <input type="number" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500">
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Alavancagem Máxima</label>
+                                    <input type="number" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white">
                                 </div>
                             </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Risco por operação padrão (%)</label>
-                                <input type="number" value="2" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 max-w-xs">
-                            </div>
-
-                            <div class="pt-4 border-t border-gray-800">
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-3">Modo de execução padrão</label>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="bg-gray-950 p-4 rounded-xl border border-emerald-500/40">
-                                        <p class="font-bold text-sm text-white">Simulação (recomendada)</p>
-                                        <p class="text-xs text-gray-400 mt-1">O bot gera os sinais e simula em conta falsa, sem enviar ordens reais. Ideal para validar as estratégias.</p>
-                                    </div>
-                                    <div class="bg-gray-950 p-4 rounded-xl border border-gray-800">
-                                        <p class="font-bold text-sm text-white">Real - Dinheiro de verdade</p>
-                                        <p class="text-xs text-gray-400 mt-1">O bot envia ordens reais à corretora usando seu saldo. A chave de API precisa de permissão de "Trade".</p>
-                                    </div>
+                            <div class="bg-gray-950 p-5 rounded-xl border border-gray-800 space-y-3">
+                                <h6 class="text-xs font-bold text-emerald-400 uppercase">Estratégia Aeroquant Combinada</h6>
+                                <p class="text-xs text-gray-400">O bot combina as 4 estratégias por votação quantitativa:</p>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs pt-2">
+                                    <div class="bg-gray-900 p-3 rounded-lg border border-emerald-500/30 text-emerald-400">Trend Following</div>
+                                    <div class="bg-gray-900 p-3 rounded-lg border border-gray-800 text-gray-300">Scalping + Momentum</div>
+                                    <div class="bg-gray-900 p-3 rounded-lg border border-gray-800 text-gray-300">Mean Reversion</div>
+                                    <div class="bg-gray-900 p-3 rounded-lg border border-gray-800 text-gray-300">Smart Money (SMC)</div>
                                 </div>
                             </div>
-
-                            <div class="pt-4 border-t border-gray-800 space-y-4">
-                                <h5 class="text-sm font-bold text-emerald-400 uppercase tracking-wide">Configuração avançada padrão</h5>
-                                
-                                <div>
-                                    <label class="block text-xs font-semibold text-gray-400 mb-2">Estratégia WITS Combinada</label>
-                                    <p class="text-xs text-gray-500 mb-3">O bot usa as 4 estratégias juntas, como uma única estratégia. Os sinais são combinados por votação para decidir cada entrada.</p>
-                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-                                        <div class="bg-gray-950 p-3 rounded-lg border border-emerald-500/30 text-emerald-400 font-semibold">Trend Following</div>
-                                        <div class="bg-gray-950 p-3 rounded-lg border border-gray-800">Scalping + Momentum</div>
-                                        <div class="bg-gray-950 p-3 rounded-lg border border-gray-800">Mean Reversion</div>
-                                        <div class="bg-gray-950 p-3 rounded-lg border border-gray-800">Smart Money (SMC)</div>
-                                    </div>
-                                </div>
-
-                                <div class="pt-4 border-t border-gray-800 space-y-4">
-                                    <h5 class="text-sm font-bold text-emerald-400">WITS Guardian - Gestão de Risco & Preservação de Capital</h5>
-                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <div>
-                                            <label class="block text-xs text-gray-400 mb-1">Score mínimo de entrada (0-100)</label>
-                                            <input type="number" value="75" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white">
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs text-gray-400 mb-1">Capital mínimo (USDT)</label>
-                                            <input type="number" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white">
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs text-gray-400 mb-1">Perda diária máx. %</label>
-                                            <input type="number" value="5" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <button onclick="saveBotSettingsVid()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-bold text-black transition shadow-lg shadow-emerald-900/30 mt-6">Salvar Configurações</button>
-                                <p id="cfg-saved-msg" class="text-xs text-emerald-400 font-medium"></p>
-                            </div>
+                            <button onclick="alert('Configurações salvas!')" class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-bold text-black transition">Salvar Configurações</button>
                         </div>
                     </div>
                 </div>
 
-                <div id="section-gas" class="main-section hidden space-y-6">
-                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl max-w-xl">
-                        <h3 class="text-lg font-bold mb-4 text-emerald-400">Saldo de Gás (USDT - BEP20)</h3>
-                        <p class="text-sm text-gray-400">Gerencie seu saldo para manter os robôs ativos.</p>
+                <div id="sec-gas" class="app-section hidden space-y-6 max-w-4xl mx-auto">
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl flex justify-between items-center">
+                        <div>
+                            <p class="text-xs uppercase tracking-widest text-gray-400 font-semibold">Ganhos de Indicação</p>
+                            <p class="text-2xl font-black text-emerald-400 neon-glow mt-1">$0.00</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs uppercase tracking-widest text-gray-400 font-semibold">Comissões</p>
+                            <p class="text-sm font-bold text-emerald-400 mt-1">15% - 10% - 5%</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-4">
+                        <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wider">Selecione o plano de gás</h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                            <button class="bg-gray-950 border border-gray-800 p-4 rounded-xl text-center"><span class="block text-sm font-bold text-white">1.000</span><span class="block text-xs text-emerald-400 font-semibold mt-1">$10</span></button>
+                            <button class="bg-gray-950 border border-gray-800 p-4 rounded-xl text-center"><span class="block text-sm font-bold text-white">2.000</span><span class="block text-xs text-emerald-400 font-semibold mt-1">$20</span></button>
+                            <button class="bg-emerald-950/25 border border-emerald-500 p-4 rounded-xl text-center"><span class="block text-sm font-bold text-white">5.000</span><span class="block text-xs text-emerald-400 font-semibold mt-1">$40</span></button>
+                            <button class="bg-gray-950 border border-gray-800 p-4 rounded-xl text-center"><span class="block text-sm font-bold text-white">10.000</span><span class="block text-xs text-emerald-400 font-semibold mt-1">$100</span></button>
+                            <button class="bg-gray-950 border border-gray-800 p-4 rounded-xl text-center"><span class="block text-sm font-bold text-white">20.000</span><span class="block text-xs text-emerald-400 font-semibold mt-1">$150</span></button>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-950/30 border border-amber-500/30 p-4 rounded-xl flex items-center space-x-3">
+                        <span class="text-amber-400 text-lg">⚠️</span>
+                        <p class="text-xs text-gray-300">Envie apenas USDT na rede <strong class="text-white">BEP20 (BSC)</strong>.</p>
+                    </div>
+
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl flex flex-col items-center text-center space-y-6">
+                        <p class="text-3xl font-black text-emerald-400 neon-glow">$40.00 <span class="text-lg">USDT</span></p>
+                        <div class="w-full flex items-center bg-gray-950 border border-gray-800 rounded-xl p-3">
+                            <input type="text" readonly value="0xFC69e78aD9E3869e1D98683897e06509B9829c46" class="bg-transparent text-xs text-gray-300 w-full focus:outline-none font-mono">
+                            <button onclick="navigator.clipboard.writeText('0xFC69e78aD9E3869e1D98683897e06509B9829c46'); alert('Copiado!');" class="bg-gray-800 text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-bold ml-2">Copiar</button>
+                        </div>
+                        <div class="w-full space-y-3">
+                            <input type="text" placeholder="Cole o TX Hash da transação (0x...)" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs font-mono">
+                            <button onclick="alert('Comprovante enviado com sucesso!')" class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-bold text-black transition">Enviar Comprovante</button>
+                        </div>
                     </div>
                 </div>
-                <div id="section-licenca" class="main-section hidden space-y-6">
-                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl max-w-xl">
-                        <h3 class="text-lg font-bold mb-4 text-emerald-400">Licença do Sistema</h3>
-                    </div>
-                </div>
-                <div id="section-referencias" class="main-section hidden space-y-6">
-                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl max-w-xl">
-                        <h3 class="text-lg font-bold mb-4 text-emerald-400">Referências e Indicações</h3>
-                    </div>
-                </div>
-                <div id="section-configuracoes" class="main-section hidden space-y-6">
-                    <div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl max-w-xl">
-                        <h3 class="text-lg font-bold mb-4 text-emerald-400">Configurações Gerais da Conta</h3>
-                    </div>
-                </div>
+
+                <div id="sec-licenca" class="app-section hidden space-y-6"><div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl"><h3 class="text-lg font-bold text-emerald-400">Licença Aeroquant</h3><p class="text-xs text-gray-400 mt-2">Sua licença está ativa e regular.</p></div></div>
+                <div id="sec-referencias" class="app-section hidden space-y-6"><div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl"><h3 class="text-lg font-bold text-emerald-400">Indicações e Bônus</h3></div></div>
+                <div id="sec-configuracoes" class="app-section hidden space-y-6"><div class="bg-gray-900/90 border border-gray-800/80 p-8 rounded-2xl shadow-xl"><h3 class="text-lg font-bold text-emerald-400">Configurações Gerais da Conta</h3></div></div>
             </main>
         </div>
     </div>
 
     <script>
-        function switchMainTab(sectionId) {
-            document.querySelectorAll('.main-section').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('nav button').forEach(el => {
+        function switchSection(secId) {
+            document.querySelectorAll('.app-section').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(el => {
                 el.classList.remove('bg-gradient-to-r', 'from-emerald-600', 'to-teal-700', 'text-white', 'shadow-lg', 'shadow-emerald-900/30', 'font-semibold');
                 el.classList.add('text-gray-400', 'hover:bg-gray-800/80', 'hover:text-emerald-400', 'font-medium');
             });
 
-            document.getElementById('section-' + sectionId).classList.remove('hidden');
-            
-            // Highlight sidebar active item
-            event.currentTarget.classList.add('bg-gradient-to-r', 'from-emerald-600', 'to-teal-700', 'text-white', 'shadow-lg', 'shadow-emerald-900/30', 'font-semibold');
-            event.currentTarget.classList.remove('text-gray-400', 'hover:bg-gray-800/80', 'hover:text-emerald-400', 'font-medium');
-
-            const titles = {
-                'dashboard': 'Dashboard',
-                'bots': 'Bots de Trading',
-                'gas': 'Saldo de Gás',
-                'licenca': 'Licença',
-                'referencias': 'Referências',
-                'configuracoes': 'Configurações'
-            };
-            document.getElementById('page-title').innerText = titles[sectionId];
+            document.getElementById('sec-' + secId).classList.remove('hidden');
+            const activeBtn = document.getElementById('nav-' + secId);
+            activeBtn.classList.add('bg-gradient-to-r', 'from-emerald-600', 'to-teal-700', 'text-white', 'shadow-lg', 'shadow-emerald-900/30', 'font-semibold');
+            activeBtn.classList.remove('text-gray-400', 'hover:bg-gray-800/80', 'hover:text-emerald-400', 'font-medium');
         }
 
-        function switchBotTab(tabName) {
-            document.querySelectorAll('.bot-tab-content').forEach(el => el.classList.add('hidden'));
+        function switchBotTab(tabId) {
+            document.querySelectorAll('.bot-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.bot-tab-btn').forEach(el => {
                 el.classList.remove('bg-emerald-600', 'text-black', 'font-bold');
                 el.classList.add('text-gray-400', 'hover:bg-gray-800', 'hover:text-emerald-400', 'font-semibold');
             });
 
-            document.getElementById('bot-tab-' + tabName).classList.remove('hidden');
-            const activeBtn = document.getElementById('btn-' + tabName);
-            activeBtn.classList.add('bg-emerald-600', 'text-black', 'font-bold');
-            activeBtn.classList.remove('text-gray-400', 'hover:bg-gray-800', 'hover:text-emerald-400', 'font-semibold');
-        }
-
-        function saveBotSettingsVid() {
-            const msg = document.getElementById('cfg-saved-msg');
-            msg.innerText = "Configurações salvas com sucesso!";
-            setTimeout(() => { msg.innerText = ""; }, 3000);
-        }
-
-        function openNewBotModal() {
-            alert("Modal de criação de novo bot.");
+            document.getElementById('bot-tab-' + tabId).classList.remove('hidden');
+            const btn = document.getElementById('btn-bot-' + tabId);
+            btn.classList.add('bg-emerald-600', 'text-black', 'font-bold');
+            btn.classList.remove('text-gray-400', 'hover:bg-gray-800', 'hover:text-emerald-400', 'font-semibold');
         }
     </script>
 </body>
