@@ -4,9 +4,12 @@ import ccxt
 
 app = Flask(__name__)
 
-# Armazenamento temporário de credenciais e estado dos bots
 user_api_storage = {}
 bot_states = {}
+user_balances = {
+    "gas_balance": 998.0,  # Saldo inicial de gás demonstrativo
+    "transactions": []
+}
 
 @app.route('/api/connect', methods=['POST'])
 def connect_exchange():
@@ -29,7 +32,6 @@ def connect_exchange():
             'enableRateLimit': True,
         })
         
-        # Validação buscando o saldo
         exchange_instance.fetch_balance()
         
         user_api_storage[exchange_id] = {
@@ -40,7 +42,7 @@ def connect_exchange():
         
         return jsonify({
             "status": "success",
-            "message": f"Conexão com a {exchange_id.capitalize()} realizada e validada com sucesso!"
+            "message": f"Conexão com a {exchange_id.capitalize()} realizada com sucesso!"
         }), 200
 
     except ccxt.AuthenticationError:
@@ -52,7 +54,7 @@ def connect_exchange():
 def control_bot():
     try:
         data = request.get_json()
-        action = data.get('action') # 'start' ou 'stop'
+        action = data.get('action')
         exchange_id = data.get('exchange', 'bybit')
         symbol = data.get('symbol', 'BTC/USDT')
         
@@ -68,14 +70,9 @@ def control_bot():
         })
         
         if action == 'start':
-            # Ativa o estado do bot e busca preço atual como referência inicial
             ticker = exchange.fetch_ticker(symbol)
-            bot_states[symbol] = {
-                'status': 'running',
-                'last_price': ticker['last']
-            }
-            return jsonify({"status": "success", "message": f"Bot iniciado para {symbol} na {exchange_id.capitalize()}!"}), 200
-            
+            bot_states[symbol] = {'status': 'running', 'last_price': ticker['last']}
+            return jsonify({"status": "success", "message": f"Bot iniciado para {symbol}!"}), 200
         elif action == 'stop':
             if symbol in bot_states:
                 bot_states[symbol]['status'] = 'stopped'
@@ -85,6 +82,39 @@ def control_bot():
 
     except Exception as e:
         return jsonify({"error": f"Erro no controle do bot: {str(e)}"}), 500
+
+@app.route('/api/gas/balance', methods=['GET'])
+def get_gas_balance():
+    return jsonify({
+        "gas_balance": user_balances["gas_balance"],
+        "transactions": user_balances["transactions"]
+    }), 200
+
+@app.route('/api/gas/deposit', methods=['POST'])
+def register_deposit():
+    try:
+        data = request.get_json()
+        amount = float(data.get('amount', 0))
+        tx_hash = data.get('txHash')
+        
+        if amount <= 0 or not tx_hash:
+            return jsonify({"error": "Informe um valor válido e o comprovante (TxHash)."}), 400
+            
+        user_balances["gas_balance"] += amount
+        user_balances["transactions"].append({
+            "type": "Gás",
+            "amount": amount,
+            "txHash": tx_hash,
+            "status": "Aprovado"
+        })
+        
+        return jsonify({
+            "status": "success",
+            "message": f"Depósito de {amount} USDT registrado com sucesso!",
+            "new_balance": user_balances["gas_balance"]
+        }), 200
+    except Exception as e:
+        return jsonify({"error": f"Erro ao registrar depósito: {str(e)}"}), 500
 
 @app.route('/health', methods=['GET'])
 def health_check():
