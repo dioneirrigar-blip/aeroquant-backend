@@ -3,7 +3,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-app = FastAPI(title="AeroQuant Backend - Secure API Bridge", version="2.0.0")
+app = FastAPI(title="AeroQuant Backend Bridge", version="2.5.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,51 +18,82 @@ class BrokerCredentials(BaseModel):
     api_key: str
     api_secret: str
 
-# Instância global dinâmica para gerenciar a conexão recebida do painel com segurança
-active_exchange = None
+class OrderRequest(BaseModel):
+    broker: str
+    api_key: str
+    api_secret: str
+    symbol: str
+    side: str  # 'BUY' ou 'SELL'
+    amount: float
+    leverage: int
+
+def get_exchange_instance(broker_name: str, api_key: str, api_secret: str):
+    broker_id = "bybit" if "Bybit" in broker_name else "binance" if "Binance" in broker_name else "bitget"
+    exchange_class = getattr(ccxt, broker_id)
+    return exchange_class({
+        'apiKey': api_key.strip(),
+        'secret': api_secret.strip(),
+        'enableRateLimit': True,
+        'options': {'defaultType': 'future'}
+    })
 
 @app.post("/api/connect")
 async def connect_broker(creds: BrokerCredentials):
-    global active_exchange
+    exchange = None
     try:
-        # Mapeia a corretora selecionada no frontend para o CCXT
-        broker_id = "bybit" if "Bybit" in creds.broker else "binance" if "Binance" in creds.broker else "bitget"
+        exchange = get_exchange_instance(creds.broker, creds.api_key, creds.api_secret)
+        balance = await exchange.fetch_balance()
         
-        exchange_class = getattr(ccxt, broker_id)
-        active_exchange = exchange_class({
-            'apiKey': creds.api_key.strip(),
-            'secret': creds.api_secret.strip(),
-            'enableRateLimit': True,
-            'options': {'defaultType': 'future'}
-        })
-        
-        # Validação das credenciais buscando o saldo diretamente na corretora
-        balance = await active_exchange.fetch_balance()
-        
-        # Filtra o saldo livre/total em USDT disponível na conta de futuros
-        usdt_balance = balance.get('USDT', {}).get('free', 0.0)
-        if not usdt_balance and 'total' in balance:
-            usdt_balance = balance['total'].get('USDT', 154.83) # Fallback seguro validado
-
-        await active_exchange.close()
+        # Pega o saldo de USDT disponível na conta de futuros
+        usdt_balance = 0.0
+        if 'USDT' in balance:
+            usdt_balance = balance['USDT'].get('free', 0.0)
+        elif 'total' in balance and 'USDT' in balance['total']:
+            usdt_balance = balance['total']['USDT']
 
         return {
             "status": "success",
-            "message": "Conexão validada com sucesso!",
+            "message": f"Conectado com sucesso à corretora {creds.broker}!",
             "margin_balance": round(float(usdt_balance), 2)
         }
-        
     except Exception as e:
-        if active_exchange:
-            await active_exchange.close()
-        raise HTTPException(status_code=400, detail=f"Erro ao conectar na corretora: {str.strip(str(e))}")
+        error_msg = str(e)
+        if "Invalid" in error_msg or "Signature" in error_msg or "API" in error_msg:
+            raise HTTPException(status_code=400, detail="Credenciais inválidas ou sem permissão de futuros/trade.")
+        raise HTTPException(status_code=400, detail=f"Erro de comunicação: {error_msg}")
+    finally:
+        if exchange:
+            await exchange.close()
 
-@app.get("/api/status")
-async def get_status():
-    return {
-        "status": "online",
-        "robot_status": "Prontos para Operar" if active_exchange else "Aguardando Conexão"
-    }
+@app.post("/api/order")
+async def execute_order(order: OrderRequest):
+    exchange = None
+    try:
+        exchange = get_exchange_instance(order.broker, order.api_key, order.api_secret)
+        
+        # Configurar alavancagem
+        try:
+            await exchange.set_leverage(order.leverage, order.symbol)
+        except Exception:
+            pass # Algumas corretoras gerenciam alavancagem isoladamente na interface ou já configurada
+
+        # Criar ordem de mercado
+        order_type = 'market'
+        side = 'buy' if order.side == 'BUY' else 'sell'
+        
+        # Executa ordem na corretora real
+        execution = await exchange.create_order(order.symbol, order_type, side, order.amount)
+
+        return {
+            "status": "success",
+            "message": f"Ordem {order.side} executada com sucesso no par {order.symbol}!",
+            "order_id": execution.get('id')
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Erro ao executar ordem: {str(e)}")
+    finally:
+        if exchange:
+            await exchange.close()
 
 if __name__ == "__main__":
     import uvicorn
