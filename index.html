@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aeroquant - Painel de Controle</title>
+    <title>AeroQuant - Painel de Controle</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -24,21 +24,22 @@
 
     <header class="border-b border-bordercolor bg-cardbg/50 backdrop-blur sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-3">
-            <div class="bg-emerald-500/10 border border-emerald-500/20 p-2 rounded-xl text-emerald-400 font-bold tracking-wider">
+            <div class="bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded-xl text-emerald-400 font-black text-sm tracking-wider">
                 AEROQUANT
             </div>
-            <span class="text-xs text-slate-400 border-l border-bordercolor pl-3 hidden sm:inline">Painel Quant & Derivativos</span>
+            <span class="text-xs text-slate-400 border border-bordercolor px-3 py-1 rounded-full hidden sm:inline">Painel Quant & Derivativos</span>
         </div>
         <div class="flex items-center space-x-4">
-            <div id="connection-status-badge" class="bg-amber-950/65 border border-amber-500/30 text-amber-400 px-3 py-1 rounded-xl text-xs font-semibold">
+            <span id="connection-status-badge" class="bg-amber-950/65 border border-amber-500/30 text-amber-400 px-3 py-1 rounded-xl text-xs font-semibold">
                 Aguardando Conexão
-            </div>
+            </span>
         </div>
     </header>
 
     <main class="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         <div class="space-y-6">
+            <!-- Conectar Corretora -->
             <div class="bg-cardbg border border-bordercolor rounded-2xl p-5 shadow-xl">
                 <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-4 flex items-center gap-2">
                     🔑 Conectar Corretora
@@ -47,9 +48,9 @@
                     <div>
                         <label class="block text-xs font-medium text-slate-400 mb-1">Corretora</label>
                         <select id="broker-select" class="w-full bg-darkbg border border-bordercolor rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
-                            <option value="bybit">Bybit (Derivativos/Futures)</option>
-                            <option value="binance">Binance (Futures)</option>
-                            <option value="bitget">Bitget (Futures)</option>
+                            <option value="Bybit">Bybit (Derivativos/Futures)</option>
+                            <option value="Binance">Binance (Futures)</option>
+                            <option value="Bitget">Bitget (Futures)</option>
                         </select>
                     </div>
                     <div>
@@ -67,6 +68,7 @@
                 </div>
             </div>
 
+            <!-- Disparo de Estratégia -->
             <div class="bg-cardbg border border-bordercolor rounded-2xl p-5 shadow-xl">
                 <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-4 flex items-center gap-2">
                     ⚡ Disparo de Estratégia
@@ -75,9 +77,9 @@
                     <div>
                         <label class="block text-xs font-medium text-slate-400 mb-1">Ativo (Par)</label>
                         <select id="symbol-select" class="w-full bg-darkbg border border-bordercolor rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
-                            <option value="BTC/USDT">BTC / USDT</option>
-                            <option value="ETH/USDT">ETH / USDT</option>
-                            <option value="XRP/USDT">XRP / USDT</option>
+                            <option value="BTC/USDT:USDT">BTC / USDT</option>
+                            <option value="ETH/USDT:USDT">ETH / USDT</option>
+                            <option value="XRP/USDT:USDT">XRP / USDT</option>
                         </select>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
@@ -102,27 +104,29 @@
             </div>
         </div>
 
+        <!-- Coluna direita -->
         <div class="lg:col-span-2 space-y-6">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="bg-cardbg border border-bordercolor rounded-2xl p-4 shadow-xl">
                     <span class="text-xs font-medium text-slate-400 uppercase">Saldo de Margem (USDT)</span>
-                    <h3 id="margin-display" class="text-2xl font-bold text-slate-100 mt-1">$ --.--</h3>
+                    <h3 id="margin-display" class="text-2xl font-bold text-slate-100 mt-1">$ ---.--</h3>
                 </div>
                 <div class="bg-cardbg border border-bordercolor rounded-2xl p-4 shadow-xl">
                     <span class="text-xs font-medium text-slate-400 uppercase">Status do Robô</span>
-                    <div id="robot-status-text" class="text-sm font-semibold text-amber-400 mt-2 flex items-center">
-                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse mr-2"></span> Aguardando Conexão
+                    <div id="robot-status-text" class="text-sm font-semibold text-amber-400 mt-2 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+                        Aguardando Conexão
                     </div>
                 </div>
             </div>
 
             <div class="bg-cardbg border border-bordercolor rounded-2xl p-5 shadow-xl">
-                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4 flex items-center gap-2">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2">
                     📊 Posições Abertas em Tempo Real
                 </h2>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs text-slate-300">
-                        <thead class="border-b border-bordercolor text-slate-400 uppercase">
+                    <table class="w-full text-left text-xs text-slate-400">
+                        <thead class="border-b border-bordercolor text-slate-500 uppercase">
                             <tr>
                                 <th class="pb-3 font-medium">Par</th>
                                 <th class="pb-3 font-medium">Lado</th>
@@ -149,17 +153,16 @@
                 </div>
             </div>
         </div>
-
     </main>
 
     <script>
-        // API configurada para apontar direto para o backend no Render
-        const API_BASE = 'https://aeroquant-backend-1.onrender.com/api';
+        // API apontando para o Railway
+        const API_BASE = "https://aeroquant-backend-production.up.railway.app/api";
 
         function logTerminal(texto) {
             const terminal = document.getElementById('terminal-box');
             const hora = new Date().toLocaleTimeString();
-            terminal.innerHTML += `<div>> [${hora}] ${texto}</div>`;
+            terminal.innerHTML += `<div>[${hora}] ${texto}</div>`;
             terminal.scrollTop = terminal.scrollHeight;
         }
 
@@ -177,7 +180,7 @@
 
             msg.className = "text-xs text-center font-medium mt-1 text-amber-400";
             msg.innerText = "Conectando e validando na corretora...";
-            logTerminal("Conectando com a API da " + broker.toUpperCase() + "...");
+            logTerminal(`Conectando com a API da ${broker.toUpperCase()}...`);
 
             try {
                 const response = await fetch(`${API_BASE}/connect`, {
@@ -198,17 +201,17 @@
                     msg.className = "text-xs text-center font-medium mt-1 text-emerald-400";
                     msg.innerText = data.message || "Conectado com sucesso!";
                     document.getElementById('margin-display').innerText = `$ ${data.margin_balance || '0.00'}`;
-                    document.getElementById('robot-status-text').innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse mr-2"></span> Conectado (${broker})`;
+                    document.getElementById('robot-status-text').innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span> Conectado (${broker})`;
                     document.getElementById('connection-status-badge').className = "bg-emerald-950/65 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-xl text-xs font-semibold";
                     document.getElementById('connection-status-badge').innerText = "Conectado";
-                    logTerminal(`Sucesso: Conexão validada! Saldo retornado: $ ${data.margin_balance || '0.00'}`);
+                    logTerminal(`Sucesso: Conexão validada! Saldo retornado: $${data.margin_balance || '0.00'}`);
                 } else {
                     throw new Error(data.detail || "Erro desconhecido na API.");
                 }
             } catch (error) {
                 msg.className = "text-xs text-center font-medium mt-1 text-rose-400";
                 msg.innerText = error.message;
-                logTerminal(`❌ Erro: ${error.message}`);
+                logTerminal(`X Erro: ${error.message}`);
             }
         }
 
@@ -236,13 +239,13 @@
 
                 const data = await response.json();
                 if (response.ok) {
-                    logTerminal(`✅ Ordem executada com sucesso! ID: ${data.order_id || 'N/A'}`);
+                    logTerminal(`Ordem executada com sucesso! ID: ${data.order_id || 'N/A'}`);
                     alert(data.message);
                 } else {
                     throw new Error(data.detail || "Erro ao executar ordem.");
                 }
             } catch (error) {
-                logTerminal(`❌ Erro na ordem: ${error.message}`);
+                logTerminal(`X Erro na ordem: ${error.message}`);
                 alert("Erro: " + error.message);
             }
         }
