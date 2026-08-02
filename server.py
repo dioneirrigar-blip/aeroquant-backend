@@ -5,7 +5,7 @@ from pydantic import BaseModel
 import uvicorn
 import os
 
-app = FastAPI(title="AeroQuant Backend Bridge - Testnet Fix", version="3.5.0")
+app = FastAPI(title="AeroQuant Backend Bridge - Mainnet", version="3.6.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -46,9 +46,7 @@ async def connect_broker(creds: BrokerCredentials):
         }
     })
 
-    # Força o modo Sandbox da Bybit para utilizar a infraestrutura de Testnet sem bloqueio de IP
-    if broker_id == 'bybit':
-        exchange.set_sandbox_mode(True)
+    # Removido o set_sandbox_mode para usar conta REAL (Mainnet)
 
     try:
         balance = await exchange.fetch_balance()
@@ -61,7 +59,7 @@ async def connect_broker(creds: BrokerCredentials):
 
         return {
             "status": "success",
-            "message": "Conectado com sucesso à Bybit (Testnet)!",
+            "message": "Conectado com sucesso à Bybit (Mainnet)!",
             "margin_balance": round(float(usdt_balance), 2)
         }
     except Exception as e:
@@ -83,8 +81,7 @@ async def execute_order(order: OrderRequest):
         'options': {'defaultType': 'future'}
     })
 
-    if broker_id == 'bybit':
-        exchange.set_sandbox_mode(True)
+    # Removido o set_sandbox_mode para usar conta REAL (Mainnet)
 
     try:
         try:
@@ -97,7 +94,7 @@ async def execute_order(order: OrderRequest):
 
         return {
             "status": "success",
-            "message": f"Ordem {order.side} executada com sucesso na Testnet!",
+            "message": f"Ordem {order.side} executada com sucesso na Mainnet!",
             "order_id": execution.get('id')
         }
     except Exception as e:
