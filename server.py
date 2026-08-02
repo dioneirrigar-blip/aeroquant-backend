@@ -3,7 +3,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-app = FastAPI(title="AeroQuant Backend Bridge", version="2.7.0")
+app = FastAPI(title="AeroQuant Backend Bridge", version="2.8.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -45,7 +45,8 @@ async def connect_broker(creds: BrokerCredentials):
     })
 
     try:
-        # Executa a chamada sem carregar mercados pesados para responder instantaneamente
+        # Carrega mercados de forma leve e busca o saldo direto
+        await exchange.load_markets(reload=False)
         balance = await exchange.fetch_balance()
         
         usdt_balance = 0.0
@@ -62,7 +63,7 @@ async def connect_broker(creds: BrokerCredentials):
         }
     except Exception as e:
         error_msg = str(e)
-        raise HTTPException(status_code=400, detail=f"Erro de autenticação: {error_msg}")
+        raise HTTPException(status_code=400, detail=f"Falha na conexão: {error_msg}")
     finally:
         await exchange.close()
 
@@ -81,6 +82,7 @@ async def execute_order(order: OrderRequest):
     })
 
     try:
+        await exchange.load_markets(reload=False)
         try:
             await exchange.set_leverage(order.leverage, order.symbol)
         except Exception:
