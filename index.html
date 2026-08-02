@@ -20,7 +20,7 @@
             <h1 class="text-lg font-black tracking-wider text-emerald-400 neon-glow uppercase">Aeroquant</h1>
         </div>
         <div class="flex items-center space-x-4">
-            <button onclick="alert('Indisponível no momento')" class="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-xl text-xs font-semibold transition border border-gray-700">API Docs</button>
+            <span id="connection-status-badge" class="bg-amber-950/60 border border-amber-500/30 text-amber-400 px-3 py-1 rounded-xl text-xs font-semibold">Desconectado</span>
         </div>
     </header>
 
@@ -39,26 +39,27 @@
                     <div class="space-y-3">
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Corretora</label>
-                            <select class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
-                                <option>Bybit (Derivativos/Futures)</option>
-                                <option>Binance (Futures)</option>
-                                <option>Bitget (Futures)</option>
+                            <select id="broker-select" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
+                                <option value="Bybit">Bybit (Derivativos/Futures)</option>
+                                <option value="Binance">Binance (Futures)</option>
+                                <option value="Bitget">Bitget (Futures)</option>
                             </select>
                         </div>
 
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">API Key</label>
-                            <input type="password" placeholder="Cole sua API Key" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
+                            <input type="password" id="api-key" placeholder="Cole sua API Key" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
                         </div>
 
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">API Secret</label>
-                            <input type="password" placeholder="Cole seu Secret Key" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
+                            <input type="password" id="api-secret" placeholder="Cole seu Secret Key" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
                         </div>
 
-                        <button onclick="alert('Conectando à corretora...')" class="w-full bg-emerald-400 hover:bg-emerald-500 text-black font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-emerald-900/20">
+                        <button onclick="conectarCorretora()" class="w-full bg-emerald-400 hover:bg-emerald-500 text-black font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-emerald-900/20">
                             Validar e Conectar API
                         </button>
+                        <p id="connect-msg" class="text-xs text-center font-medium mt-1"></p>
                     </div>
                 </div>
 
@@ -71,29 +72,29 @@
                     <div class="space-y-3">
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Ativo (Par)</label>
-                            <select class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
-                                <option>BTC / USDT</option>
-                                <option>ETH / USDT</option>
-                                <option>XRP / USDT</option>
+                            <select id="order-symbol" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
+                                <option value="BTC/USDT:USDT">BTC / USDT</option>
+                                <option value="ETH/USDT:USDT">ETH / USDT</option>
+                                <option value="XRP/USDT:USDT">XRP / USDT</option>
                             </select>
                         </div>
 
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Valor ($ USDT)</label>
-                                <input type="number" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
+                                <input type="number" id="order-amount" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Alavancagem</label>
-                                <input type="number" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
+                                <input type="number" id="order-leverage" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
                             </div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-3 pt-2">
-                            <button onclick="alert('Ordem Long enviada!')" class="bg-emerald-600 hover:bg-emerald-500 text-black font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-emerald-900/20 flex items-center justify-center space-x-1">
+                            <button onclick="enviarOrdem('BUY')" class="bg-emerald-600 hover:bg-emerald-500 text-black font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-emerald-900/20 flex items-center justify-center space-x-1">
                                 <span>🚀</span><span>COMPRAR (LONG)</span>
                             </button>
-                            <button onclick="alert('Ordem Short enviada!')" class="bg-rose-600 hover:bg-rose-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-rose-900/20 flex items-center justify-center space-x-1">
+                            <button onclick="enviarOrdem('SELL')" class="bg-rose-600 hover:bg-rose-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-rose-900/20 flex items-center justify-center space-x-1">
                                 <span>📉</span><span>VENDER (SHORT)</span>
                             </button>
                         </div>
@@ -104,29 +105,26 @@
             <!-- Coluna Direita: Saldos, Posições e Terminal -->
             <div class="lg:col-span-2 space-y-6">
                 
-                <!-- Cards superiores (Margem e Status do Robô) -->
+                <!-- Cards superiores -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
                         <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Saldo de Margem (USDT)</p>
-                        <p class="text-3xl font-black text-white mt-3">$ --.--</p>
+                        <p id="margin-display" class="text-3xl font-black text-white mt-3">$ 0.00</p>
                     </div>
 
                     <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
                         <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Status do Robô</p>
-                        <p class="text-lg font-bold text-amber-400 mt-3 flex items-center">
+                        <p id="robot-status-text" class="text-lg font-bold text-amber-400 mt-3 flex items-center">
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse mr-2"></span> Aguardando Conexão
                         </p>
                     </div>
                 </div>
 
-                <!-- Posições Abertas em Tempo Real -->
+                <!-- Posições Abertas -->
                 <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center space-x-2">
-                            <span>📊</span><span>Posições Abertas em Tempo Real</span>
-                        </h4>
-                        <span class="text-xs text-gray-500">Atualiza a cada 2s</span>
-                    </div>
+                    <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center space-x-2">
+                        <span>📊</span><span>Posições Abertas em Tempo Real</span>
+                    </h4>
 
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs text-gray-400">
@@ -137,26 +135,24 @@
                                     <th class="p-3">Qtd</th>
                                     <th class="p-3">Entrada</th>
                                     <th class="p-3">PNL (USDT)</th>
-                                    <th class="p-3">Ação</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-800/60">
+                            <tbody id="positions-table-body" class="divide-y divide-gray-800/60">
                                 <tr>
-                                    <td colspan="6" class="p-6 text-center text-gray-500 italic">Nenhuma posição aberta no momento.</td>
+                                    <td colspan="5" class="p-6 text-center text-gray-500 italic">Nenhuma posição aberta no momento.</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- Terminal de Operações em Tempo Real -->
+                <!-- Terminal de Operações -->
                 <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-3">
                     <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center space-x-2">
                         <span>💻</span><span>Terminal de Operações em Tempo Real</span>
                     </h4>
-
-                    <div class="bg-gray-950 border border-gray-800 rounded-xl p-4 font-mono text-xs text-emerald-400 h-36 overflow-y-auto space-y-1 shadow-inner">
-                        <p class="text-gray-500">> Sistema Iniciado. Conecte a API para habilitar ordens..</p>
+                    <div id="terminal-logs" class="bg-gray-950 border border-gray-800 rounded-xl p-4 font-mono text-xs text-emerald-400 h-36 overflow-y-auto space-y-1 shadow-inner">
+                        <p class="text-gray-500">> Sistema Iniciado. Insira suas credenciais e clique em Validar e Conectar.</p>
                     </div>
                 </div>
 
@@ -164,5 +160,93 @@
         </div>
     </main>
 
+    <script>
+        const API_BASE = "/api";
+
+        async function conectarCorretora() {
+            const broker = document.getElementById('broker-select').value;
+            const apiKey = document.getElementById('api-key').value.trim();
+            const apiSecret = document.getElementById('api-secret').value.trim();
+            const msg = document.getElementById('connect-msg');
+
+            if (!apiKey || !apiSecret) {
+                msg.className = "text-xs text-center font-medium mt-1 text-rose-400";
+                msg.innerText = "Preencha a API Key e o Secret Key!";
+                return;
+            }
+
+            msg.className = "text-xs text-center font-medium mt-1 text-amber-400";
+            msg.innerText = "Conectando e validando na corretora...";
+            logTerminal(`Conectando com a API da ${broker.toUpperCase()}...`);
+
+            try {
+                const response = await fetch(`${API_BASE}/connect`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ broker, api_key: apiKey, api_secret: apiSecret })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    msg.className = "text-xs text-center font-medium mt-1 text-emerald-400";
+                    msg.innerText = data.message;
+                    document.getElementById('margin-display').innerText = `$ ${data.margin_balance}`;
+                    document.getElementById('robot-status-text').innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse mr-2"></span> Prontos para Operar`;
+                    document.getElementById('connection-status-badge').className = "bg-emerald-950/65 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-xl text-xs font-semibold";
+                    document.getElementById('connection-status-badge').innerText = "API Conectada";
+                    logTerminal(`Sucesso: Conexão validada! Saldo retornado: $ ${data.margin_balance}`);
+                } else {
+                    throw new Error(data.detail || "Erro de conexão.");
+                }
+            } catch (error) {
+                msg.className = "text-xs text-center font-medium mt-1 text-rose-400";
+                msg.innerText = error.message;
+                logTerminal(`❌ Erro: ${error.message}`);
+            }
+        }
+
+        async function enviarOrdem(side) {
+            const broker = document.getElementById('broker-select').value;
+            const apiKey = document.getElementById('api-key').value.trim();
+            const apiSecret = document.getElementById('api-secret').value.trim();
+            const symbol = document.getElementById('order-symbol').value;
+            const amount = parseFloat(document.getElementById('order-amount').value);
+            const leverage = parseInt(document.getElementById('order-leverage').value);
+
+            if (!apiKey || !apiSecret) {
+                alert("Conecte a API preenchendo as chaves antes de enviar ordens.");
+                return;
+            }
+
+            logTerminal(`Enviando ordem ${side} (${symbol}) com alavancagem ${leverage}x...`);
+
+            try {
+                const response = await fetch(`${API_BASE}/order`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ broker, api_key: apiKey, api_secret: apiSecret, symbol, side, amount, leverage })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    logTerminal(`Sucesso: ${data.message}`);
+                    alert(data.message);
+                } else {
+                    throw new Error(data.detail || "Erro ao executar ordem.");
+                }
+            } catch (error) {
+                logTerminal(`Erro na ordem: ${error.message}`);
+                alert(`Erro: ${error.message}`);
+            }
+        }
+
+        function logTerminal(text) {
+            const term = document.getElementById('terminal-logs');
+            const time = new Date().toLocaleTimeString();
+            term.innerHTML += `<p>> [${time}] ${text}</p>`;
+            term.scrollTop = term.scrollHeight;
+        }
+    </script>
 </body>
 </html>
