@@ -5,7 +5,7 @@ from pydantic import BaseModel
 import uvicorn
 import os
 
-app = FastAPI(title="AeroQuant Backend Bridge", version="3.1.0")
+app = FastAPI(title="AeroQuant Backend Bridge - Testnet", version="3.2.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -39,12 +39,16 @@ async def connect_broker(creds: BrokerCredentials):
         'apiKey': creds.api_key.strip(),
         'secret': creds.api_secret.strip(),
         'enableRateLimit': True,
-        'timeout': 10000,
+        'timeout': 15000,
         'options': {
             'defaultType': 'future',
             'adjustForTimeDifference': True
         }
     })
+
+    # Ativa o modo Testnet para evitar bloqueio geográfico da Bybit Mainnet
+    if broker_id == 'bybit':
+        exchange.set_sandbox_mode(True)
 
     try:
         balance = await exchange.fetch_balance()
@@ -57,11 +61,11 @@ async def connect_broker(creds: BrokerCredentials):
 
         return {
             "status": "success",
-            "message": f"Conectado com sucesso à corretora {creds.broker}!",
+            "message": f"Conectado com sucesso à {creds.broker} (Testnet)!",
             "margin_balance": round(float(usdt_balance), 2)
         }
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Falha na conexão: {str(e)}")
+        raise HTTPException(status_code=400, detail=f"Falha na conexão (Testnet): {str(e)}")
     finally:
         await exchange.close()
 
@@ -75,9 +79,12 @@ async def execute_order(order: OrderRequest):
         'apiKey': order.api_key.strip(),
         'secret': order.api_secret.strip(),
         'enableRateLimit': True,
-        'timeout': 10000,
+        'timeout': 15000,
         'options': {'defaultType': 'future'}
     })
+
+    if broker_id == 'bybit':
+        exchange.set_sandbox_mode(True)
 
     try:
         try:
@@ -90,7 +97,7 @@ async def execute_order(order: OrderRequest):
 
         return {
             "status": "success",
-            "message": f"Ordem {order.side} executada com sucesso!",
+            "message": f"Ordem {order.side} executada com sucesso na Testnet!",
             "order_id": execution.get('id')
         }
     except Exception as e:
