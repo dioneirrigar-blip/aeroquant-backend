@@ -3,213 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AeroQuant — Painel de Controle & API</title>
+    <title>AeroQuant - Painel de Controle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-        body {
-            background-color: #0b0f19;
-            color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            background: #131b2e;
-        }
-        .logo {
-            font-weight: 800;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-decoration: none;
-        }
-        .back-link {
-            color: #9ca3af;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-        .back-link:hover {
-            color: #ffffff;
-        }
-        .container {
-            max-width: 600px;
-            margin: 60px auto;
-            padding: 0 20px;
-            width: 100%;
-            flex: 1;
-        }
-        .card {
-            background: #131b2e;
-            border: 1px solid #1e293b;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        h2 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        p.desc {
-            color: #9ca3af;
-            font-size: 0.95rem;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #cbd5e1;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        select, input {
-            width: 100%;
-            padding: 14px;
-            background: #0b0f19;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        select:focus, input:focus {
-            border-color: #10b981;
-        }
-        .btn-submit {
-            width: 100%;
-            background-color: #10b981;
-            color: #ffffff;
-            padding: 16px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 10px;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
-            transition: background 0.2s, transform 0.2s;
-        }
-        .btn-submit:hover {
-            background-color: #059669;
-            transform: translateY(-1px);
-        }
-        #status-msg {
-            margin-top: 20px;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            text-align: center;
-            display: none;
-        }
-        .success {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-        .error {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.2);
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(52, 211, 153, 0.4), 0 0 20px rgba(52, 211, 153, 0.2);
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-950 text-gray-100 font-sans selection:bg-emerald-500 selection:text-black min-h-screen flex flex-col">
 
-    <header>
-        <a href="index.html" class="logo">AERO QUANT</a>
-        <a href="index.html" class="back-link">← Voltar ao Início</a>
+    <header class="bg-gray-900/95 border-b border-gray-800 px-8 py-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center space-x-3">
+            <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+            <h1 class="text-lg font-black tracking-wider text-emerald-400 neon-glow uppercase">Aeroquant</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span id="connection-status-badge" class="bg-amber-950/60 border border-amber-500/30 text-amber-400 px-3 py-1 rounded-xl text-xs font-semibold">Desconectado</span>
+        </div>
     </header>
 
-    <div class="container">
-        <div class="card">
-            <h2>Conexão de API</h2>
-            <p class="desc">Selecione sua corretora e insira suas credenciais de API com permissão de leitura e operação (nunca ative permissão de saque).</p>
+    <main class="flex-1 p-8 max-w-7xl mx-auto w-full space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <form id="api-form">
-                <div class="form-group">
-                    <label for="exchange">Corretora</label>
-                    <select id="exchange" required>
-                        <option value="" disabled selected>Selecione a corretora</option>
-                        <option value="bybit">Bybit</option>
-                        <option value="binance">Binance</option>
-                        <option value="bingx">BingX</option>
-                        <option value="okx">OKX</option>
-                        <option value="kucoin">KuCoin</option>
-                    </select>
+            <div class="space-y-6">
+                <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-4">
+                    <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider flex items-center space-x-2">
+                        <span>🔑</span><span>Conectar Corretora</span>
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Corretora</label>
+                            <select id="broker-select" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
+                                <option value="Bybit">Bybit (Derivativos/Futures)</option>
+                                <option value="Binance">Binance (Futures)</option>
+                                <option value="Bitget">Bitget (Futures)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">API Key</label>
+                            <input type="password" id="api-key" placeholder="Cole sua API Key" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">API Secret</label>
+                            <input type="password" id="api-secret" placeholder="Cole seu Secret Key" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
+                        </div>
+
+                        <button onclick="conectarCorretora()" class="w-full bg-emerald-400 hover:bg-emerald-500 text-black font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-emerald-900/20">
+                            Validar e Conectar API
+                        </button>
+                        <p id="connect-msg" class="text-xs text-center font-medium mt-1"></p>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="api-key">API Key</label>
-                    <input type="text" id="api-key" placeholder="Insira sua API Key" required autocomplete="off">
+                <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-4">
+                    <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider flex items-center space-x-2">
+                        <span>⚡</span><span>Disparo de Estratégia</span>
+                    </h3>
+
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Ativo (Par)</label>
+                            <select id="order-symbol" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
+                                <option value="BTC/USDT:USDT">BTC / USDT</option>
+                                <option value="ETH/USDT:USDT">ETH / USDT</option>
+                                <option value="XRP/USDT:USDT">XRP / USDT</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Valor ($ USDT)</label>
+                                <input type="number" id="order-amount" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Alavancagem</label>
+                                <input type="number" id="order-leverage" value="10" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <button onclick="enviarOrdem('BUY')" class="bg-emerald-600 hover:bg-emerald-500 text-black font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-emerald-900/20 flex items-center justify-center space-x-1">
+                                <span>🚀</span><span>COMPRAR (LONG)</span>
+                            </button>
+                            <button onclick="enviarOrdem('SELL')" class="bg-rose-600 hover:bg-rose-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-rose-900/20 flex items-center justify-center space-x-1">
+                                <span>📉</span><span>VENDER (SHORT)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 space-y-6">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Saldo de Margem (USDT)</p>
+                        <p id="margin-display" class="text-3xl font-black text-white mt-3">$ 0.00</p>
+                    </div>
+
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Status do Robô</p>
+                        <p id="robot-status-text" class="text-lg font-bold text-amber-400 mt-3 flex items-center">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse mr-2"></span> Aguardando Conexão
+                        </p>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="api-secret">API Secret</label>
-                    <input type="password" id="api-secret" placeholder="Insira sua API Secret" required autocomplete="off">
+                <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-4">
+                    <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center space-x-2">
+                        <span>📊</span><span>Posições Abertas em Tempo Real</span>
+                    </h4>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-gray-400">
+                            <thead class="bg-gray-950 uppercase text-[10px] text-gray-500">
+                                <tr>
+                                    <th class="p-3">Par</th>
+                                    <th class="p-3">Lado</th>
+                                    <th class="p-3">Qtd</th>
+                                    <th class="p-3">Entrada</th>
+                                    <th class="p-3">PNL (USDT)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="positions-table-body" class="divide-y divide-gray-800/60">
+                                <tr>
+                                    <td colspan="5" class="p-6 text-center text-gray-500 italic">Nenhuma posição aberta no momento.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <button type="submit" class="btn-submit">Conectar e Ativar Bot</button>
-            </form>
+                <div class="bg-gray-900/90 border border-gray-800/80 p-6 rounded-2xl shadow-xl space-y-3">
+                    <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center space-x-2">
+                        <span>💻</span><span>Terminal de Operações em Tempo Real</span>
+                    </h4>
+                    <div id="terminal-logs" class="bg-gray-950 border border-gray-800 rounded-xl p-4 font-mono text-xs text-emerald-400 h-36 overflow-y-auto space-y-1 shadow-inner">
+                        <p class="text-gray-500">> Sistema Iniciado. Insira suas credenciais e clique em Validar e Conectar.</p>
+                    </div>
+                </div>
 
-            <div id="status-msg"></div>
+            </div>
         </div>
-    </div>
+    </main>
 
     <script>
-        document.getElementById('api-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const exchange = document.getElementById('exchange').value;
-            const apiKey = document.getElementById('api-key').value;
-            const apiSecret = document.getElementById('api-secret').value;
-            const statusMsg = document.getElementById('status-msg');
+        const API_BASE = "/api"; // Se rodar local, mude para "http://localhost:8000/api"
 
-            // Exemplo de requisição para o backend Python (server.py)
-            // Caso o backend esteja rodando em outro endpoint, ajuste a URL abaixo:
-            fetch('/api/connect', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ exchange, apiKey, apiSecret })
-            })
-            .then(response => {
+        async function conectarCorretora() {
+            const broker = document.getElementById('broker-select').value;
+            const apiKey = document.getElementById('api-key').value.trim();
+            const apiSecret = document.getElementById('api-secret').value.trim();
+            const msg = document.getElementById('connect-msg');
+
+            if (!apiKey || !apiSecret) {
+                msg.className = "text-xs text-center font-medium mt-1 text-rose-400";
+                msg.innerText = "Preencha a API Key e o Secret Key!";
+                return;
+            }
+
+            msg.className = "text-xs text-center font-medium mt-1 text-amber-400";
+            msg.innerText = "Conectando e validando na corretora...";
+
+            try {
+                const response = await fetch(`${API_BASE}/connect`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ broker, api_key: apiKey, api_secret: apiSecret })
+                });
+
+                const data = await response.json();
+
                 if (response.ok) {
-                    return response.json();
+                    msg.className = "text-xs text-center font-medium mt-1 text-emerald-400";
+                    msg.innerText = data.message;
+                    document.getElementById('margin-display').innerText = `$ ${data.margin_balance}`;
+                    document.getElementById('robot-status-text').innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse mr-2"></span> Conectado (${broker})`;
+                    document.getElementById('connection-status-badge').className = "bg-emerald-950/65 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-xl text-xs font-semibold";
+                    document.getElementById('connection-status-badge').innerText = "Conectado";
+                    logTerminal(`Conexão estabelecida com sucesso com ${broker}. Saldo USDT: $${data.margin_balance}`);
+                } else {
+                    throw new Error(data.detail || "Erro de conexão.");
                 }
-                throw new Error('Erro ao conectar com a API da corretora.');
-            })
-            .then(data => {
-                statusMsg.style.display = 'block';
-                statusMsg.className = 'success';
-                statusMsg.textContent = 'Conexão realizada com sucesso! O robô está pronto.';
-            })
-            .catch(error => {
-                // Como o servidor estático na Vercel simula a resposta caso o server.py precise de infra dedicada, 
-                // exibimos uma mensagem amigável para testes de UI se necessário:
-                statusMsg.style.display = 'block';
-                statusMsg.className = 'success'; // Alternando visualmente para feedback imediato do usuário
-                statusMsg.textContent = 'Credenciais recebidas com sucesso! Inicializando conexões...';
-            });
-        });
+            } catch (error) {
+                msg.className = "text-xs text-center font-medium mt-1 text-rose-400";
+                msg.innerText = error.message;
+                logTerminal(`Falha na conexão: ${error.message}`);
+            }
+        }
+
+        async function enviarOrdem(side) {
+            const broker = document.getElementById('broker-select').value;
+            const apiKey = document.getElementById('api-key').value.trim();
+            const apiSecret = document.getElementById('api-secret').value.trim();
+            const symbol = document.getElementById('order-symbol').value;
+            const amount = parseFloat(document.getElementById('order-amount').value);
+            const leverage = parseInt(document.getElementById('order-leverage').value);
+
+            if (!apiKey || !apiSecret) {
+                alert("Conecte a API preenchendo as chaves antes de enviar ordens.");
+                return;
+            }
+
+            logTerminal(`Enviando ordem ${side} (${symbol}) com alavancagem ${leverage}x...`);
+
+            try {
+                const response = await fetch(`${API_BASE}/order`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ broker, api_key: apiKey, api_secret: apiSecret, symbol, side, amount, leverage })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    logTerminal(`Sucesso: ${data.message}`);
+                    alert(data.message);
+                } else {
+                    throw new Error(data.detail || "Erro ao enviar ordem.");
+                }
+            } catch (error) {
+                logTerminal(`Erro na ordem: ${error.message}`);
+                alert(`Erro: ${error.message}`);
+            }
+        }
+
+        function logTerminal(text) {
+            const term = document.getElementById('terminal-logs');
+            const time = new Date().toLocaleTimeString();
+            term.innerHTML += `<p>> [${time}] ${text}</p>`;
+            term.scrollTop = term.scrollHeight;
+        }
     </script>
 </body>
 </html>
