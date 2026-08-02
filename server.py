@@ -2,8 +2,10 @@ import ccxt.async_support as ccxt
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import uvicorn
+import os
 
-app = FastAPI(title="AeroQuant Backend Bridge", version="2.8.0")
+app = FastAPI(title="AeroQuant Backend Bridge", version="3.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -37,7 +39,7 @@ async def connect_broker(creds: BrokerCredentials):
         'apiKey': creds.api_key.strip(),
         'secret': creds.api_secret.strip(),
         'enableRateLimit': True,
-        'timeout': 5000,
+        'timeout': 10000,
         'options': {
             'defaultType': 'future',
             'adjustForTimeDifference': True
@@ -45,10 +47,7 @@ async def connect_broker(creds: BrokerCredentials):
     })
 
     try:
-        # Carrega mercados de forma leve e busca o saldo direto
-        await exchange.load_markets(reload=False)
         balance = await exchange.fetch_balance()
-        
         usdt_balance = 0.0
         if isinstance(balance, dict):
             if 'USDT' in balance:
@@ -62,8 +61,7 @@ async def connect_broker(creds: BrokerCredentials):
             "margin_balance": round(float(usdt_balance), 2)
         }
     except Exception as e:
-        error_msg = str(e)
-        raise HTTPException(status_code=400, detail=f"Falha na conexão: {error_msg}")
+        raise HTTPException(status_code=400, detail=f"Falha na conexão: {str(e)}")
     finally:
         await exchange.close()
 
@@ -77,18 +75,17 @@ async def execute_order(order: OrderRequest):
         'apiKey': order.api_key.strip(),
         'secret': order.api_secret.strip(),
         'enableRateLimit': True,
-        'timeout': 7000,
+        'timeout': 10000,
         'options': {'defaultType': 'future'}
     })
 
     try:
-        await exchange.load_markets(reload=False)
         try:
             await exchange.set_leverage(order.leverage, order.symbol)
         except Exception:
             pass
 
-        side = 'buy' if order.side.upper() == 'BUY' else 'sell'
+        side = 'buy' if order.side.lower() == 'buy' else 'sell'
         execution = await exchange.create_order(order.symbol, 'market', side, order.amount)
 
         return {
@@ -102,5 +99,5 @@ async def execute_order(order: OrderRequest):
         await exchange.close()
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("server:app", host="0.0.0.0", port=port)
