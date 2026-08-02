@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aeroquant - Painel de Controle</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -23,7 +22,6 @@
 </head>
 <body class="bg-darkbg text-slate-100 min-h-screen flex flex-col font-sans antialiased">
 
-    <!-- Top Bar -->
     <header class="border-b border-bordercolor bg-cardbg/50 backdrop-blur sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-3">
             <div class="bg-emerald-500/10 border border-emerald-500/20 p-2 rounded-xl text-emerald-400 font-bold tracking-wider">
@@ -38,12 +36,9 @@
         </div>
     </header>
 
-    <!-- Main Container -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        <!-- Coluna Esquerda: Conexão e Disparo -->
         <div class="space-y-6">
-            <!-- Conectar Corretora -->
             <div class="bg-cardbg border border-bordercolor rounded-2xl p-5 shadow-xl">
                 <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-4 flex items-center gap-2">
                     🔑 Conectar Corretora
@@ -72,7 +67,6 @@
                 </div>
             </div>
 
-            <!-- Disparo de Estratégia -->
             <div class="bg-cardbg border border-bordercolor rounded-2xl p-5 shadow-xl">
                 <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-4 flex items-center gap-2">
                     ⚡ Disparo de Estratégia
@@ -108,9 +102,7 @@
             </div>
         </div>
 
-        <!-- Coluna Direita: Informações, Posições e Terminal -->
         <div class="lg:col-span-2 space-y-6">
-            <!-- Cards Superiores de Status -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="bg-cardbg border border-bordercolor rounded-2xl p-4 shadow-xl">
                     <span class="text-xs font-medium text-slate-400 uppercase">Saldo de Margem (USDT)</span>
@@ -124,7 +116,6 @@
                 </div>
             </div>
 
-            <!-- Posições Abertas -->
             <div class="bg-cardbg border border-bordercolor rounded-2xl p-5 shadow-xl">
                 <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4 flex items-center gap-2">
                     📊 Posições Abertas em Tempo Real
@@ -149,7 +140,6 @@
                 </div>
             </div>
 
-            <!-- Terminal de Operações -->
             <div class="bg-cardbg border border-bordercolor rounded-2xl p-5 shadow-xl">
                 <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2">
                     💻 Terminal de Operações em Tempo Real
@@ -162,9 +152,9 @@
 
     </main>
 
-    <!-- Script de Lógica Frontend -->
     <script>
-        const API_BASE = '/api';
+        // API configurada para apontar direto para o backend no Render
+        const API_BASE = 'https://aeroquant-backend-1.onrender.com/api';
 
         function logTerminal(texto) {
             const terminal = document.getElementById('terminal-box');
@@ -201,7 +191,7 @@
                 try {
                     data = JSON.parse(textResponse);
                 } catch (e) {
-                    throw new Error("Erro interno no servidor (Deploy/Timeout): " + textResponse.substring(0, 100));
+                    throw new Error("Erro no servidor: " + textResponse.substring(0, 100));
                 }
 
                 if (response.ok) {
@@ -223,8 +213,38 @@
         }
 
         async function executarOrdem(side) {
-            logTerminal(`Enviando comando de ordem (${side.toUpperCase()})...`);
-            alert("Certifique-se de que a API está conectada antes de disparar ordens.");
+            const broker = document.getElementById('broker-select').value;
+            const apiKey = document.getElementById('api-key').value.trim();
+            const apiSecret = document.getElementById('api-secret').value.trim();
+            const symbol = document.getElementById('symbol-select').value;
+            const amount = parseFloat(document.getElementById('trade-amount').value);
+            const leverage = parseInt(document.getElementById('trade-leverage').value);
+
+            if (!apiKey || !apiSecret) {
+                alert("Conecte a API preenchendo as chaves antes de disparar ordens.");
+                return;
+            }
+
+            logTerminal(`Enviando comando de ordem (${side.toUpperCase()}) para ${symbol}...`);
+
+            try {
+                const response = await fetch(`${API_BASE}/order`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ broker, api_key: apiKey, api_secret: apiSecret, symbol, side, amount, leverage })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    logTerminal(`✅ Ordem executada com sucesso! ID: ${data.order_id || 'N/A'}`);
+                    alert(data.message);
+                } else {
+                    throw new Error(data.detail || "Erro ao executar ordem.");
+                }
+            } catch (error) {
+                logTerminal(`❌ Erro na ordem: ${error.message}`);
+                alert("Erro: " + error.message);
+            }
         }
     </script>
 </body>
