@@ -5,7 +5,7 @@ from pydantic import BaseModel
 import uvicorn
 import os
 
-app = FastAPI(title="AeroQuant Backend Bridge", version="3.4.0")
+app = FastAPI(title="AeroQuant Backend Bridge - Testnet Fix", version="3.5.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -46,12 +46,9 @@ async def connect_broker(creds: BrokerCredentials):
         }
     })
 
-    # Contorna restrições de IP em ambientes de nuvem se for Bybit
+    # Força o modo Sandbox da Bybit para utilizar a infraestrutura de Testnet sem bloqueio de IP
     if broker_id == 'bybit':
-        try:
-            exchange.urls['api'] = exchange.urls['test'] # Força o uso da camada de testes/alternativa se houver bloqueio
-        except Exception:
-            pass
+        exchange.set_sandbox_mode(True)
 
     try:
         balance = await exchange.fetch_balance()
@@ -64,7 +61,7 @@ async def connect_broker(creds: BrokerCredentials):
 
         return {
             "status": "success",
-            "message": "Conectado com sucesso à Bybit!",
+            "message": "Conectado com sucesso à Bybit (Testnet)!",
             "margin_balance": round(float(usdt_balance), 2)
         }
     except Exception as e:
@@ -87,10 +84,7 @@ async def execute_order(order: OrderRequest):
     })
 
     if broker_id == 'bybit':
-        try:
-            exchange.urls['api'] = exchange.urls['test']
-        except Exception:
-            pass
+        exchange.set_sandbox_mode(True)
 
     try:
         try:
@@ -103,7 +97,7 @@ async def execute_order(order: OrderRequest):
 
         return {
             "status": "success",
-            "message": f"Ordem {order.side} executada com sucesso!",
+            "message": f"Ordem {order.side} executada com sucesso na Testnet!",
             "order_id": execution.get('id')
         }
     except Exception as e:
